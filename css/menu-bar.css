@@ -1,0 +1,111 @@
+.nav-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  clip-path: circle(25px at 45px 45px);
+  transition: all 0.3s ease-in-out;
+  background: rgba(0, 0, 0, 0);
+  z-index: 5;
+}
+
+#active:checked ~ .nav-container {
+  background: rgba(0, 0, 0, 1);
+  clip-path: circle(75%);
+}
+
+.menu-btn {
+  position: fixed;
+  z-index: 6;
+  left: 20px;
+  top: 20px;
+  height: 50px;
+  width: 50px;
+  text-align: center;
+  line-height: 50px;
+  border-radius: 50%;
+  font-size: 20px;
+  color: #fff;
+  cursor: pointer;
+  background: #000;
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+.menu-btn::before {
+  content: '☰';
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+.menu-btn:hover {
+  background: #333;
+}
+
+.nav-container ul {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  list-style: none;
+  text-align: center;
+
+  font-family: 'Playwrite AT', cursive;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.nav-container ul li {
+  margin: 15px 0;
+}
+
+.nav-container ul li a {
+  text-decoration: none;
+  font-size: 30px;
+  font-weight: 500;
+  padding: 5px 30px;
+  color: #fff;
+  border-radius: 50px;
+  background: #000;
+  position: relative;
+  line-height: 50px;
+  transition: all 0.3s ease;
+}
+
+.nav-container ul li a:after {
+  position: absolute;
+  content: '';
+  background: linear-gradient(#14ffe9, #ffeb3b, #ff00e0);
+  width: 104%;
+  height: 110%;
+  left: -2%;
+  top: -5%;
+  border-radius: 50px;
+  transform: scaleY(0);
+  z-index: -1;
+  animation: rotate 1.5s linear infinite;
+  transition: transform 0.3s ease;
+}
+
+.nav-container ul li a:hover:after {
+  transform: scaleY(1);
+}
+
+.nav-container ul li a:hover {
+  color: #fff;
+}
+
+input[type='checkbox'] {
+  display: none;
+}
+
+@keyframes rotate {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
