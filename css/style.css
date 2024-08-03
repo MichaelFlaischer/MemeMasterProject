@@ -51,7 +51,7 @@ main {
   background-color: var(--bg-color-main);
   padding: 2rem;
 
-  background: url('img/background.jpg') no-repeat center center fixed;
+  /* background: url('img/background.jpg') no-repeat center center fixed; */
   background-size: cover;
 }
 
@@ -59,7 +59,7 @@ main {
   grid-column: 2 / 3;
   padding: 1rem;
   overflow-y: auto;
-  height: 100vh;
+  height: 100%;
 }
 
 footer {
