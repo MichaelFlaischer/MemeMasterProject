@@ -79,8 +79,8 @@ function loadKeywordsByChar(characters) {
   elKeywordList.innerHTML = optionsList
 }
 
-function deletePainting(id) {
-  deletePaintingById(id)
+function deleteImage(id) {
+  deleteImageById(id)
   renderGallery()
   closeDialog()
 }
@@ -89,4 +89,58 @@ function closeDialog(event = null) {
     const elDialog = document.querySelector('.dialog')
     elDialog.style.display = 'none'
   }
+}
+
+function initializeKeywordSearches() {
+  const allKeywords = getAllKeywords()
+  let keywordSearches = []
+
+  allKeywords.forEach((keyword) => {
+    const randomTimes = Math.floor(Math.random() * 100) + 1
+    keywordSearches.push({ keyword: keyword, times: randomTimes })
+  })
+
+  localStorage.setItem('keywordSearches', JSON.stringify(keywordSearches))
+}
+
+function renderKeywords() {
+  const keywordContainer = document.querySelector('.keywordContainer')
+  const keywordSearches = getKeywordSearches().slice(0, 20)
+  let kewWordHtml = ''
+  keywordContainer.innerHTML = ''
+
+  keywordSearches.forEach((keywordSearch) => {
+    const fontSize = Math.min(Math.max(keywordSearch.times, 1), 40)
+    kewWordHtml += `<span class="keyword" style="font-size: ${fontSize}px;" onclick="showSelectedKeyword('${keywordSearch.keyword}')">${keywordSearch.keyword}</span>`
+  })
+  kewWordHtml += `<span class="keyword" style="font-size: 40px;" onclick="showAllKeyWords()">...</span>`
+  keywordContainer.innerHTML = kewWordHtml
+}
+
+function showAllKeyWords() {
+  const keywordContainer = document.querySelector('.keywordContainer')
+  const keywordSearches = getKeywordSearches()
+  let kewWordHtml = ''
+  keywordContainer.innerHTML = ''
+
+  keywordSearches.forEach((keywordSearch) => {
+    const fontSize = Math.min(Math.max(keywordSearch.times, 1), 40)
+    kewWordHtml += `<span class="keyword" style="font-size: ${fontSize}px;" onclick="showSelectedKeyword('${keywordSearch.keyword}')">${keywordSearch.keyword}</span>`
+  })
+  kewWordHtml += `<span class="keyword" style="font-size: 40px;" onclick="renderKeywords()">(-)</span>`
+
+  keywordContainer.innerHTML = kewWordHtml
+}
+
+function showSelectedKeyword(keyword) {
+  const elKeywordList = document.getElementById('keywordInput')
+  elKeywordList.value = keyword
+  renderGallery(keyword)
+  renderKeywords()
+}
+
+function clearSearchInput() {
+  const elKeywordList = document.getElementById('keywordInput')
+  elKeywordList.value = ''
+  renderGallery()
 }

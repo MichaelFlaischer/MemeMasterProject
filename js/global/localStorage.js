@@ -49,6 +49,10 @@ function getKeywordsByCharacters(characters) {
 }
 
 function addKeywordSearch(keyword) {
+  const allKeywords = getAllKeywords()
+
+  if (!allKeywords.includes(keyword)) return
+
   let keywordSearches = JSON.parse(localStorage.getItem('keywordSearches')) || []
   const keywordIndex = keywordSearches.findIndex((k) => k.keyword === keyword)
 
@@ -62,4 +66,16 @@ function addKeywordSearch(keyword) {
 }
 function getKeywordSearches() {
   return JSON.parse(localStorage.getItem('keywordSearches')) || []
+}
+
+function initializeKeywordSearches() {
+  const allKeywords = getAllKeywords()
+  let keywordSearches = []
+
+  allKeywords.forEach((keyword) => {
+    const randomTimes = Math.floor(Math.random() * 100) + 1
+    keywordSearches.push({ keyword: keyword, times: randomTimes })
+  })
+
+  localStorage.setItem('keywordSearches', JSON.stringify(keywordSearches))
 }

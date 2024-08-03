@@ -6,6 +6,7 @@ function onInitGallery() {
   menuRender()
   checkMemoryNotEmpty()
   renderGallery()
+  renderKeywords()
 }
 
 function createImageObject(imgSource, imgName, creator, date, keywords) {
@@ -257,4 +258,5 @@ function checkMemoryNotEmpty() {
     let images = generateImageArray()
     images.forEach((image) => saveImage(image))
   }
+  initializeKeywordSearches()
 }
