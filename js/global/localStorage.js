@@ -25,13 +25,41 @@ function deleteImageById(id) {
 
 function getAllKeywords() {
   const allImages = [...getAllPaintings(), ...getAllBaseImages()]
-  const keywords = new Set()
+  const keywords = []
 
   allImages.forEach((image) => {
-    image.keywords.forEach((keyword) => {
-      keywords.add(keyword)
+    image.keyword.forEach((keyword) => {
+      keywords.push(keyword)
     })
   })
 
-  return Array.from(keywords)
+  return keywords
+}
+
+function getImagesByKeyword(keywordSearch) {
+  const allImages = [...getAllBaseImages()]
+  return allImages.filter((image) => {
+    return image.keyword.some((keyword) => keyword.includes(keywordSearch))
+  })
+}
+
+function getKeywordsByCharacters(characters) {
+  const allKeywords = getAllKeywords()
+  return allKeywords.filter((keyword) => keyword.includes(characters))
+}
+
+function addKeywordSearch(keyword) {
+  let keywordSearches = JSON.parse(localStorage.getItem('keywordSearches')) || []
+  const keywordIndex = keywordSearches.findIndex((k) => k.keyword === keyword)
+
+  if (keywordIndex > -1) {
+    keywordSearches[keywordIndex].times += 1
+  } else {
+    keywordSearches.push({ keyword: keyword, times: 1 })
+  }
+
+  localStorage.setItem('keywordSearches', JSON.stringify(keywordSearches))
+}
+function getKeywordSearches() {
+  return JSON.parse(localStorage.getItem('keywordSearches')) || []
 }

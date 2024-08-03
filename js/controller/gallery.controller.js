@@ -1,10 +1,20 @@
 'use strict'
 
-function renderGallery() {
+function renderGallery(keyword = null) {
   const gallery = document.querySelector('.gallery')
-  gallery.innerHTML = ''
-  const images = getAllBaseImages()
-
+  if (keyword === null || keyword.length === 0)
+    gallery.innerHTML = `
+      <div class="image-container">
+        <p>Add Image</p>
+        <img src="img/addImageButton.png" alt="add image" onclick="openDialog()" />
+      </div>`
+  else gallery.innerHTML = ''
+  let images
+  if (keyword === null || keyword.length === 0) images = getAllBaseImages()
+  else {
+    images = getImagesByKeyword(keyword)
+    addKeywordSearch(keyword)
+  }
   images.forEach((image) => {
     gallery.innerHTML += `
       <div class="image-container">
@@ -14,16 +24,17 @@ function renderGallery() {
   })
 }
 
-function openDialog(id) {
-  const images = JSON.parse(localStorage.getItem('base')) || []
-  const image = images.find((images) => images.imgID === id)
+function openDialog(id = null) {
+  if (id !== null) {
+    const images = JSON.parse(localStorage.getItem('base')) || []
+    const image = images.find((images) => images.imgID === id)
 
-  if (!images) return
+    if (!images) return
 
-  let src = image.imgSource
-  let alt = image.imgName
+    let src = image.imgSource
+    let alt = image.imgName
 
-  document.querySelector('.dialog').innerHTML = `
+    document.querySelector('.dialog').innerHTML = `
     <div class="dialog-content">
       <span class="close" onclick="closeDialog()">&times;</span>
       <img class="dialog-img" src="${src}" alt="${alt}" />
@@ -52,7 +63,20 @@ function openDialog(id) {
       <button onclick="createMeme('${id}')">Create MEME</button>
     </div>`
 
-  document.querySelector('.dialog').style.display = 'flex'
+    document.querySelector('.dialog').style.display = 'flex'
+  } else {
+    console.log('asfdsa')
+  }
+}
+
+function loadKeywordsByChar(characters) {
+  const elKeywordList = document.getElementById('keywordList')
+  let optionsList = ''
+  const keywords = getKeywordsByCharacters(characters)
+  keywords.forEach((keyword) => {
+    optionsList += `<option value="${keyword}">`
+  })
+  elKeywordList.innerHTML = optionsList
 }
 
 function deletePainting(id) {
@@ -60,7 +84,9 @@ function deletePainting(id) {
   renderGallery()
   closeDialog()
 }
-function closeDialog() {
-  const dialog = document.querySelector('.dialog')
-  dialog.style.display = 'none'
+function closeDialog(event = null) {
+  if (event === null || event.key === 'Escape') {
+    const elDialog = document.querySelector('.dialog')
+    elDialog.style.display = 'none'
+  }
 }

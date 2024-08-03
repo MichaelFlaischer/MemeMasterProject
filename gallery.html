@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/gallery.css" />
     <link rel="stylesheet" href="css/menu-bar.css" />
   </head>
-  <body onload="onInitGallery()">
+  <body onload="onInitGallery()" onkeydown="closeDialog(event)">
     <script src="js/global/utils.js"></script>
     <script src="js/global/localStorage.js"></script>
     <script src="js/services/gallery.services.js"></script>
@@ -20,6 +20,15 @@
     <nav></nav>
     <main>
       <div class="main-container">
+        <input
+          type="text"
+          id="keywordInput"
+          oninput="loadKeywordsByChar(this.value)"
+          onchange="renderGallery(this.value)"
+          placeholder="Enter keyword"
+          list="keywordList"
+        />
+        <datalist id="keywordList"></datalist>
         <section class="gallery"></section>
       </div>
     </main>
