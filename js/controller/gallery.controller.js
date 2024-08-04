@@ -82,6 +82,7 @@ function loadKeywordsByChar(characters) {
 function deleteImage(id) {
   deleteImageById(id)
   renderGallery()
+  renderKeywords()
   closeDialog()
 }
 function closeDialog(event = null) {
@@ -91,26 +92,15 @@ function closeDialog(event = null) {
   }
 }
 
-function initializeKeywordSearches() {
-  const allKeywords = getAllKeywords()
-  let keywordSearches = []
-
-  allKeywords.forEach((keyword) => {
-    const randomTimes = Math.floor(Math.random() * 100) + 1
-    keywordSearches.push({ keyword: keyword, times: randomTimes })
-  })
-
-  localStorage.setItem('keywordSearches', JSON.stringify(keywordSearches))
-}
-
 function renderKeywords() {
   const keywordContainer = document.querySelector('.keywordContainer')
-  const keywordSearches = getKeywordSearches().slice(0, 20)
+  console.log(getAllKeywords())
+  const keywordSearches = isMobileDevice() ? getKeywordSearches().slice(0, 10) : getKeywordSearches().slice(0, 20)
   let kewWordHtml = ''
   keywordContainer.innerHTML = ''
 
   keywordSearches.forEach((keywordSearch) => {
-    const fontSize = Math.min(Math.max(keywordSearch.times, 1), 40)
+    const fontSize = keywordSearch.times / 1.5 + 3
     kewWordHtml += `<span class="keyword" style="font-size: ${fontSize}px;" onclick="showSelectedKeyword('${keywordSearch.keyword}')">${keywordSearch.keyword}</span>`
   })
   kewWordHtml += `<span class="keyword" style="font-size: 40px;" onclick="showAllKeyWords()">...</span>`
@@ -124,7 +114,7 @@ function showAllKeyWords() {
   keywordContainer.innerHTML = ''
 
   keywordSearches.forEach((keywordSearch) => {
-    const fontSize = Math.min(Math.max(keywordSearch.times, 1), 40)
+    const fontSize = keywordSearch.times / 1.5 + 3
     kewWordHtml += `<span class="keyword" style="font-size: ${fontSize}px;" onclick="showSelectedKeyword('${keywordSearch.keyword}')">${keywordSearch.keyword}</span>`
   })
   kewWordHtml += `<span class="keyword" style="font-size: 40px;" onclick="renderKeywords()">(-)</span>`

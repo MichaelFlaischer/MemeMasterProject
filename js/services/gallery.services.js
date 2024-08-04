@@ -257,6 +257,6 @@ function checkMemoryNotEmpty() {
   if (getAllBaseImages().length < 1) {
     let images = generateImageArray()
     images.forEach((image) => saveImage(image))
+    initializeKeywordSearches()
   }
-  initializeKeywordSearches()
 }

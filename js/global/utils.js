@@ -13,3 +13,7 @@ function generateUniqueId(length = 10) {
   }
   return uniqueId
 }
+
+function isMobileDevice() {
+  return /Mobi|Android/i.test(navigator.userAgent)
+}

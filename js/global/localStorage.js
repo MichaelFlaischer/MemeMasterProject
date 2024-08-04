@@ -21,18 +21,24 @@ function deleteImageById(id) {
     const filteredImages = storedImages.filter((image) => image.imgID !== id)
     localStorage.setItem(type, JSON.stringify(filteredImages))
   })
+  updateKeywordSearches()
 }
 
 function getAllKeywords() {
   const allImages = [...getAllPaintings(), ...getAllBaseImages()]
-  const keywords = []
+  const keywordsObj = {}
 
   allImages.forEach((image) => {
     image.keyword.forEach((keyword) => {
-      keywords.push(keyword)
+      keywordsObj[keyword] = image.imgID
     })
   })
 
+  let keywords = []
+  const keywordsArray = Object.keys(keywordsObj).map((keyword) => {
+    keywords.push(keyword)
+  })
+  console.log(keywords)
   return keywords
 }
 
@@ -64,8 +70,16 @@ function addKeywordSearch(keyword) {
 
   localStorage.setItem('keywordSearches', JSON.stringify(keywordSearches))
 }
+
 function getKeywordSearches() {
   return JSON.parse(localStorage.getItem('keywordSearches')) || []
+}
+
+function updateKeywordSearches() {
+  const allKeywords = getAllKeywords()
+  let keywordSearches = JSON.parse(localStorage.getItem('keywordSearches')) || []
+  keywordSearches = keywordSearches.filter((keywordSearch) => allKeywords.includes(keywordSearch.keyword))
+  localStorage.setItem('keywordSearches', JSON.stringify(keywordSearches))
 }
 
 function initializeKeywordSearches() {
@@ -73,6 +87,7 @@ function initializeKeywordSearches() {
   let keywordSearches = []
 
   allKeywords.forEach((keyword) => {
+    addKeywordSearch(keyword)
     const randomTimes = Math.floor(Math.random() * 100) + 1
     keywordSearches.push({ keyword: keyword, times: randomTimes })
   })
