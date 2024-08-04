@@ -101,7 +101,9 @@ function renderKeywords() {
 
   keywordSearches.forEach((keywordSearch) => {
     const fontSize = keywordSearch.times / 1.5 + 3
-    kewWordHtml += `<span class="keyword" style="font-size: ${fontSize}px;" onclick="showSelectedKeyword('${keywordSearch.keyword}')">${keywordSearch.keyword}</span>`
+    kewWordHtml += `<span class="keyword" style="font-size: ${fontSize}px;" onclick="showSelectedKeyword('${keywordSearch.keyword}')">${
+      keywordSearch.keyword + ' ' + isMobileDevice()
+    }</span>`
   })
   kewWordHtml += `<span class="keyword" style="font-size: 40px;" onclick="showAllKeyWords()">...</span>`
   keywordContainer.innerHTML = kewWordHtml
