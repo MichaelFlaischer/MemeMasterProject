@@ -12,9 +12,8 @@ function menuRender() {
         <div class="nav-container">
           <ul>
             <li><a href="main.html">Home</a></li>
-            <li><a href="">Soon</a></li>
-            <li><a href="">Soon</a></li>
             <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="meme-generator.html">Meme Generator</a></li>
             <li><a href="about.html">About</a></li>
           </ul>
         </div>
