@@ -33,3 +33,17 @@ function getCurrentDate() {
 function isMobileDevice() {
   return /Mobi|Android/i.test(navigator.userAgent)
 }
+
+function getImageDimensions(dataUrl) {
+  return new Promise((resolve) => {
+    let img = new Image()
+    img.src = dataUrl
+    img.onload = () => {
+      const imageSize = {
+        width: img.width,
+        height: img.height,
+      }
+      resolve(imageSize)
+    }
+  })
+}

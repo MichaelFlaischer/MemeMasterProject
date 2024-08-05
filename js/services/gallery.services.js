@@ -51,13 +51,6 @@ function checkMemoryNotEmpty() {
   }
 }
 
-function saveAndEditImage() {
-  if (!validateInputs()) return
-
-  saveImageToGallery()
-  showNotification('Image saved and ready for editing!')
-}
-
 function generateImageArray() {
   const images = [
     {

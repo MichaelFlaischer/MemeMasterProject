@@ -13,6 +13,8 @@
     <script src="js/global/localStorage.js"></script>
     <script src="js/services/meme-generator.services.js"></script>
     <script src="js/controller/meme-generator.controller.js"></script>
+    <script src="js/controller/meme-generator.canvas.js"></script>
+    <script src="js/controller/loadImage.canvas.js"></script>
     <script src="js/controller/menu-bar.controller.js"></script>
     <header>
       <h1>Meme Generator</h1>
@@ -21,7 +23,9 @@
     <main>
       <div class="main-container">
         <section class="meme-control"></section>
-        <section class="meme-canvas"></section>
+        <section class="meme-canvas">
+          <canvas class="canvas"></canvas>
+        </section>
         <section class="meme-save"></section>
       </div>
     </main>

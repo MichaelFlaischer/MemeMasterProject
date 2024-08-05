@@ -91,3 +91,19 @@ p {
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: var(--bg-color-light);
+  color: var(--text-color);
+  transition: background-color 0.3s ease;
+  margin: 10px 0;
+}
+
+button:hover {
+  background-color: var(--bg-color-main);
+}

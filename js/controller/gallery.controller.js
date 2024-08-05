@@ -37,7 +37,6 @@ function openShowModal(id) {
 
   let src = image.imgSource
   let alt = image.imgName
-
   document.querySelector('.dialog').innerHTML = `
   <div class="dialog-content">
     <span class="close" onclick="closeDialog()">&times;</span>
@@ -76,7 +75,7 @@ function openShowModal(id) {
       </table>
     </div>
     <button onclick="saveColors('${image.colors.backgroundColor}', '${image.colors.backgroundColorMain}', '${image.colors.textColor}')">Change Theme</button>
-    <button onclick="createMeme('${id}')">Crate MEME</button>
+    <button onclick="window.location.href='meme-generator.html?imgtype=${image.typeImg}&imgid=${image.imgID}'">Crate MEME</button>
     <button onclick="deleteImage('${id}')">Delete This Image</button>
   </div>`
 
@@ -120,7 +119,6 @@ function openEditModal() {
       </table>
     </div>
     <button onclick="saveImageToGallery()">Save Image</button>
-    <button onclick="saveAndEditImage()">Save and Edit Image</button>
   </div>`
 
   document.querySelector('.dialog').style.display = 'flex'
