@@ -141,3 +141,9 @@ function resetColorsToDefault() {
 
   saveColors(defaultColors.backgroundColor, defaultColors.backgroundColorMain, defaultColors.textColor)
 }
+
+function getImageByIdAndType(type, id) {
+  const storedImages = JSON.parse(localStorage.getItem(type)) || []
+  const image = storedImages.find((image) => image.imgID === id)
+  return image || null
+}

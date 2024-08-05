@@ -1,0 +1,38 @@
+.input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.input-container input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.input-container select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  color: var(--text-color);
+  transition: border-color 0.3s ease;
+  margin-right: 10px;
+}
+
+.input-container select:hover {
+  border-color: #007bff;
+}
+
+input[type='file'] {
+  margin-bottom: 10px;
+}
+
+.pointer {
+  cursor: pointer;
+}
