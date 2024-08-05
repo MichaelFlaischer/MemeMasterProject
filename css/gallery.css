@@ -36,13 +36,14 @@
 }
 
 .dialog-content {
-  background-color: white;
+  background-color: var(--bg-color-main);
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   width: 300px;
   text-align: center;
   position: relative;
+  color: var(--text-color);
 }
 
 .dialog-content .close {
@@ -51,6 +52,7 @@
   right: 10px;
   cursor: pointer;
   font-size: 20px;
+  color: var(--text-color);
 }
 
 .dialog-img {
@@ -78,14 +80,14 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  background-color: #007bff;
-  color: white;
+  background-color: var(--bg-color-light);
+  color: var(--text-color);
   transition: background-color 0.3s ease;
   margin: 10px 0;
 }
 
 .dialog-content button:hover {
-  background-color: #0056b3;
+  background-color: var(--bg-color-main);
 }
 
 input[type='file'] {
@@ -121,6 +123,7 @@ input[type='file'] {
   align-items: center;
   gap: 10px;
   margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
 .input-container input {
@@ -138,19 +141,35 @@ input[type='file'] {
   cursor: pointer;
   background-color: #007bff;
   color: white;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .input-container button:hover {
   background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.input-container select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  color: var(--text-color);
+  transition: border-color 0.3s ease;
+  margin-right: 10px;
+}
+
+.input-container select:hover {
+  border-color: #007bff;
 }
 
 .notification {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: #007bff;
-  color: white;
+  background-color: var(--bg-color-light);
+  color: var(--text-color);
   padding: 10px 20px;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);

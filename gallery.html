@@ -32,7 +32,13 @@
             />
             <datalist id="keywordList"></datalist>
             <button onclick="clearSearchInput()">Clear Search Input</button>
+            <select class="filterSelect" onchange="showByType()">
+              <option value="all">Show All</option>
+              <option value="base">Show Base Images</option>
+              <option value="meme">Show MEMEs</option>
+            </select>
           </div>
+
           <div class="keywordContainer"></div>
         </section>
         <section class="gallery"></section>

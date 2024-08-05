@@ -8,21 +8,23 @@ function saveImage(image) {
   addKeywordsSearch(image.keyword)
 }
 
-function getAllPaintings() {
-  return JSON.parse(localStorage.getItem('painting')) || []
+function getAllMeme() {
+  return JSON.parse(localStorage.getItem('meme')) || []
 }
 
 function getAllBaseImages() {
   return JSON.parse(localStorage.getItem('base')) || []
 }
 
-function deleteImageById(id) {
-  const filteredImages = getAllBaseImages().filter((image) => image.imgID !== id)
-  localStorage.setItem('base', JSON.stringify(filteredImages))
+function deleteImageById(id, type = 'base') {
+  const allImages = JSON.parse(localStorage.getItem(type)) || []
+  const filteredImages = allImages.filter((image) => image.imgID !== id)
+  localStorage.setItem(type, JSON.stringify(filteredImages))
   updateKeywordSearches()
 }
+
 function getAllKeywords() {
-  const allImages = [...getAllBaseImages()]
+  const allImages = [...getAllBaseImages(), ...getAllMeme()]
   const keywordsObj = {}
 
   allImages.forEach((image) => {
@@ -39,7 +41,7 @@ function getAllKeywords() {
 }
 
 function getImagesByKeyword(keywordSearch) {
-  const allBaseImages = getAllBaseImages()
+  const allBaseImages = [...getAllBaseImages(), ...getAllMeme()]
   return allBaseImages.filter((image) => {
     return image.keyword.some((keyword) => keyword.toLowerCase().includes(keywordSearch.toLowerCase()))
   })
@@ -56,7 +58,6 @@ function addKeywordSearch(keyword) {
   if (!allKeywords.includes(keyword)) return
 
   let keywordSearches = getKeywordSearches()
-  console.log(keywordSearches)
   const keywordIndex = keywordSearches.findIndex((k) => k.keyword === keyword)
 
   if (keywordIndex > -1) {
@@ -129,4 +130,14 @@ function applyColorsOnSite() {
   document.documentElement.style.setProperty('--bg-color-light', colors.backgroundColor)
   document.documentElement.style.setProperty('--bg-color-main', colors.backgroundColorMain)
   document.documentElement.style.setProperty('--text-color', colors.textColor)
+}
+
+function resetColorsToDefault() {
+  const defaultColors = {
+    backgroundColor: '#e0e0e0',
+    backgroundColorMain: '#f5f5f5',
+    textColor: 'black',
+  }
+
+  saveColors(defaultColors.backgroundColor, defaultColors.backgroundColorMain, defaultColors.textColor)
 }

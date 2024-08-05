@@ -2,24 +2,31 @@
 
 function renderGallery(keyword = null) {
   const gallery = document.querySelector('.gallery')
+  let type = document.querySelector('.filterSelect').value
+
   gallery.innerHTML = `
       <div class="image-container">
         <p>Add Image</p>
         <img src="img/addImageButton.png" alt="add image" onclick="openDialog()" />
       </div>`
-  let images
-  if (keyword === null || keyword.length === 0) images = getAllBaseImages()
-  else {
-    images = getImagesByKeyword(keyword)
+  if (keyword === null || keyword.length === 0) {
+    showByType(type)
+  } else {
+    let images = getImagesByKeyword(keyword)
+    console.log(images)
     addKeywordSearch(keyword)
-  }
-  images.forEach((image) => {
-    gallery.innerHTML += `
+    if (type !== 'all') {
+      images = images.filter((image) => image.typeImg === type)
+    }
+
+    images.forEach((image) => {
+      gallery.innerHTML += `
       <div class="image-container">
-        <p>${image.imgName}</p>
-        <img src="${image.imgSource}" alt="${image.imgName}" onclick="openDialog('${image.imgID}')" />
+      <p>${image.imgName}</p>
+      <img src="${image.imgSource}" alt="${image.imgName}" onclick="openDialog('${image.imgID}')" />
       </div>`
-  })
+    })
+  }
 }
 
 function openShowModal(id) {
@@ -143,7 +150,7 @@ function renderKeywords() {
   keywordContainer.innerHTML = ''
 
   keywordSearches.forEach((keywordSearch) => {
-    const fontSize = keywordSearch.times * 0.1 + 2
+    const fontSize = Math.min(keywordSearch.times * 0.1 + 2, 4.5)
     kewWordHtml += `<span class="keyword" style="font-size: ${fontSize}vh;" onclick="showSelectedKeyword('${keywordSearch.keyword}')">${keywordSearch.keyword}</span>`
   })
   kewWordHtml += `<span class="keyword" style="font-size: 40px;" onclick="showAllKeyWords()">...</span>`
@@ -157,7 +164,7 @@ function showAllKeyWords() {
   keywordContainer.innerHTML = ''
 
   keywordSearches.forEach((keywordSearch) => {
-    const fontSize = keywordSearch.times * 0.1 + 2
+    const fontSize = Math.min(keywordSearch.times * 0.1 + 2, 4.5)
     kewWordHtml += `<span class="keyword" style="font-size: ${fontSize}vh;" onclick="showSelectedKeyword('${keywordSearch.keyword}')">${keywordSearch.keyword}</span>`
   })
   kewWordHtml += `<span class="keyword" style="font-size: 40px;" onclick="renderKeywords()">(-)</span>`
@@ -256,4 +263,34 @@ function saveImageToGallery() {
     }
     reader.readAsDataURL(imgInput.files[0])
   }
+}
+
+function showByType() {
+  let images
+  let type = document.querySelector('.filterSelect').value
+  if (type === 'all') {
+    images = [...getAllBaseImages(), ...getAllMeme()]
+  } else if (type === 'base') {
+    images = getAllBaseImages()
+  } else if (type === 'meme') {
+    images = getAllMeme()
+  }
+
+  const gallery = document.querySelector('.gallery')
+  gallery.innerHTML = `
+      <div class="image-container">
+        <p>Add Image</p>
+        <img src="img/addImageButton.png" alt="add image" onclick="openDialog()" />
+      </div>`
+
+  images.forEach((image) => {
+    gallery.innerHTML += `
+      <div class="image-container">
+        <p>${image.imgName}</p>
+        <img src="${image.imgSource}" alt="${image.imgName}" onclick="openDialog('${image.imgID}')" />
+      </div>`
+  })
+
+  const elKeywordList = document.getElementById('keywordInput')
+  elKeywordList.value = ''
 }
