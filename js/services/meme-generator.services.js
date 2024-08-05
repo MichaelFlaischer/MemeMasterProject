@@ -12,8 +12,10 @@ function onInitMeme() {
   if (image !== null) {
     if (imgType === 'base') {
       getImageDimensions(image.imgSource).then((imgSize) => {
-        renderImage(image.imgSource, imgSize, imgId)
+        renderImage(image.imgSource, imgSize, generateUniqueId())
       })
+    } else if (imgType === 'meme') {
+      //נוציא לפי ID את האובייקט של MEME ונחזיר את המידע שלו לקבנאס
     }
   } else {
     openSelectModal()
