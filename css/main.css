@@ -12,7 +12,7 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  z-index: 1;
+  z-index: 10;
 }
 
 .video-container video {
@@ -32,7 +32,7 @@
   width: 100%;
   height: 100%;
   transform: translate(-50%, -50%);
-  z-index: 2;
+  z-index: 20;
   background: rgba(0, 0, 0, 0.3);
   color: white;
   text-align: center;

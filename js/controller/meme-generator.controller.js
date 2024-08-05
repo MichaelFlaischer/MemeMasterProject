@@ -1,5 +1,7 @@
 'use strict'
 function onInitMeme() {
+  menuRender()
+
   const searchParams = new URLSearchParams(window.location.search)
   const imgType = searchParams.get('imgtype')
   const imgId = searchParams.get('imgid')
@@ -22,19 +24,21 @@ function showNotification(message) {
 function openSelectModal() {
   document.querySelector('.dialog').innerHTML = `
   <div class="dialog-content">
-    <span class="close" onclick="closeDialog()">&times;</span>
     <div class="dialog-info">
       <p><h2>No image found for the given details.</h2></p>
       <p>You can:</p>
       <ul>
         <li>Go to the gallery and select an image or meme for editing</li>
+          <button onclick="window.location.href='gallery.html'">Go to Gallery</button>
         <li>Upload an image from your computer to create a meme</li>
+          <input type="file" id="imgInput" class="pointer" accept="image/*" onchange="previewImage(event)" />
+      <button onclick="uploadImageFromFile()">Upload from Computer</button>
         <li>Choose an image from the web</li>
+           <input type="text" id="imgUrl" placeholder="Enter image URL" />
+           <button onclick="createMemeFromUrl()">Create Meme from URL</button>
       </ul>
-      <input type="file" id="imgInput" class="pointer" accept="image/*" onchange="previewImage(event)" />
-      <input type="text" id="imgUrl" placeholder="Enter image URL" />
-    </div>
 
+    </div>
   </div>`
 
   document.querySelector('.dialog').style.display = 'flex'
