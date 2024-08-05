@@ -14,6 +14,7 @@ function createCanvas() {
   gMemeData.canvas = gMemeData.elCanvas.getContext('2d')
 
   gMemeData.canvas.clearRect(0, 0, gMemeData.elCanvas.width, gMemeData.elCanvas.height)
+  gMemeData.canvas.fillStyle = getBGColor()
   gMemeData.canvas.fillRect(0, 0, gMemeData.elCanvas.width, gMemeData.elCanvas.height)
 }
 
