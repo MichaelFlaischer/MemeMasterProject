@@ -40,6 +40,8 @@ function drawOnMove(e) {
 }
 
 function updateBaseImage(baseImage, imgSize = null, imgId) {
+  toggleCanvas()
+
   gMemeData.baseImage = baseImage
 
   if (imgSize.width === undefined) {
@@ -55,7 +57,6 @@ function updateBaseImage(baseImage, imgSize = null, imgId) {
 }
 
 function setImageOnCanvas() {
-  console.log(gMemeData)
   const screenWidth = window.innerWidth
   const screenHeight = window.innerHeight
 

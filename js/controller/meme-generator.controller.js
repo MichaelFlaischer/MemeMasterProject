@@ -36,3 +36,8 @@ function closeDialog() {
   const elDialog = document.querySelector('.dialog')
   elDialog.style.display = 'none'
 }
+
+function toggleCanvas() {
+  const elCanvas = document.querySelector('.canvas')
+  elCanvas.style.display = 'flex'
+}
