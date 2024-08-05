@@ -96,3 +96,37 @@ function initializeKeywordSearches() {
 
   localStorage.setItem('keywordSearches', JSON.stringify(keywordSearches))
 }
+
+function saveColors(backgroundColor, backgroundColorMain, textColor) {
+  const colors = {
+    backgroundColor: backgroundColor,
+    backgroundColorMain: backgroundColorMain,
+    textColor: textColor,
+  }
+  localStorage.setItem('siteColors', JSON.stringify(colors))
+
+  applyColorsOnSite()
+}
+
+function getSiteColors() {
+  let colors = JSON.parse(localStorage.getItem('siteColors')) || null
+  if (!colors) {
+    colors = {
+      backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--bg-color-light').trim(),
+      backgroundColorMain: getComputedStyle(document.documentElement).getPropertyValue('--bg-color-main').trim(),
+      textColor: getComputedStyle(document.documentElement).getPropertyValue('--text-color').trim(),
+    }
+
+    saveColors(colors.backgroundColor, colors.backgroundColorMain, colors.textColor)
+  }
+
+  return colors
+}
+
+function applyColorsOnSite() {
+  const colors = getSiteColors()
+
+  document.documentElement.style.setProperty('--bg-color-light', colors.backgroundColor)
+  document.documentElement.style.setProperty('--bg-color-main', colors.backgroundColorMain)
+  document.documentElement.style.setProperty('--text-color', colors.textColor)
+}

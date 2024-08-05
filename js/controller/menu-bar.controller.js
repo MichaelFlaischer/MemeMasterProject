@@ -1,6 +1,8 @@
 'use strict'
 
 function menuRender() {
+  applyColorsOnSite()
+
   const elNnav = document.querySelector('nav')
   elNnav.innerHTML = `
         <input type="checkbox" id="active" />

@@ -68,8 +68,9 @@ function openShowModal(id) {
         </tr>
       </table>
     </div>
+    <button onclick="saveColors('${image.colors.backgroundColor}', '${image.colors.backgroundColorMain}', '${image.colors.textColor}')">Change Theme</button>
+    <button onclick="createMeme('${id}')">Crate MEME</button>
     <button onclick="deleteImage('${id}')">Delete This Image</button>
-    <button onclick="createMeme('${id}')">Create MEME</button>
   </div>`
 
   document.querySelector('.dialog').style.display = 'flex'
