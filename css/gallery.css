@@ -38,7 +38,7 @@
 .dialog-content {
   background-color: white;
   padding: 20px;
-  border-radius: 5px;
+  border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   width: 300px;
   text-align: center;
@@ -54,25 +54,50 @@
 }
 
 .dialog-img {
-  width: 100%;
-  height: auto;
+  width: 100px;
+  height: 100px;
   margin-bottom: 20px;
+  object-fit: cover;
 }
 
-.dialog-info p {
+.dialog-info {
+  margin-top: 10px;
+}
+
+.dialog-info input {
+  width: calc(100% - 20px);
+  padding: 10px;
   margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .dialog-content button {
   padding: 10px 20px;
   font-size: 16px;
-  border: 1px solid #ccc;
+  border: none;
   border-radius: 5px;
-  margin-top: 20px;
   cursor: pointer;
+  background-color: #007bff;
+  color: white;
   transition: background-color 0.3s ease;
-  background-color: var(--bg-color-main);
-  color: var(--text-color);
+  margin: 10px 0;
+}
+
+.dialog-content button:hover {
+  background-color: #0056b3;
+}
+
+input[type='file'] {
+  margin-bottom: 10px;
+}
+
+.dialog-info input[type='color'] {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  margin: 5px 0;
+  border: none;
 }
 
 .keyword-section {
@@ -118,4 +143,21 @@
 
 .input-container button:hover {
   background-color: #0056b3;
+}
+
+.notification {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: none;
+  z-index: 1000;
+}
+
+.pointer {
+  cursor: pointer;
 }

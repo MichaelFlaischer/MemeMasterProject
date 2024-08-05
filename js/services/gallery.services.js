@@ -1,7 +1,5 @@
 'use strict'
 
-var gImgs = []
-
 function onInitGallery() {
   menuRender()
   checkMemoryNotEmpty()
@@ -9,7 +7,7 @@ function onInitGallery() {
   renderKeywords()
 }
 
-function createImageObject(imgSource, imgName, creator, date, keywords) {
+function createImageObject(imgSource, imgName, creator, date, keywords, colors) {
   return {
     imgID: generateUniqueId(),
     imgSource: imgSource,
@@ -17,8 +15,119 @@ function createImageObject(imgSource, imgName, creator, date, keywords) {
     creator: creator,
     date: date,
     keyword: keywords,
+    colors: colors,
     typeImg: 'base',
   }
+}
+
+function checkMemoryNotEmpty() {
+  if (getAllBaseImages().length < 1) {
+    let images = generateImageArray()
+    images.forEach((image) => saveImage(image))
+    initializeKeywordSearches()
+  }
+}
+
+function saveImageToGallery() {
+  if (!validateInputs()) return
+
+  const imgInput = document.getElementById('imgInput')
+  const imgName = document.getElementById('imgName').value
+  const creatorName = document.getElementById('creatorName').value
+  const imgDate = getCurrentDate()
+  let keywords = []
+  const imgKeywords = document
+    .getElementById('imgKeywords')
+    .value.split(/[ ,]+/)
+    .map((kw) => {
+      const trimmedKeyword = kw.trim().toLowerCase()
+      if (trimmedKeyword) {
+        addKeywordSearch(trimmedKeyword)
+        keywords.push(trimmedKeyword)
+      }
+    })
+  const imgType = 'base'
+
+  const colors = {
+    backgroundColor: document.getElementById('backgroundColor').value,
+    backgroundColorMain: document.getElementById('backgroundColorMain').value,
+    textColor: document.getElementById('textColor').value,
+  }
+
+  if (imgInput.files && imgInput.files[0]) {
+    const reader = new FileReader()
+    reader.onload = function (e) {
+      const imgSource = e.target.result
+      const newImage = {
+        imgID: generateUniqueId(),
+        imgSource: imgSource,
+        imgName: imgName,
+        creator: creatorName,
+        date: imgDate,
+        keyword: keywords,
+        typeImg: imgType,
+        colors: colors,
+      }
+
+      saveImage(newImage)
+      renderKeywords()
+      renderGallery()
+      showNotification('Image saved successfully!')
+      closeDialog()
+    }
+    reader.readAsDataURL(imgInput.files[0])
+  }
+}
+
+function saveAndEditImage() {
+  if (!validateInputs()) return
+
+  saveImageToGallery()
+  showNotification('Image saved and ready for editing!')
+}
+
+function openDialog(id = null) {
+  if (id !== null) {
+    openShowModal(id)
+  } else {
+    openEditModal()
+  }
+}
+
+function deleteImage(id) {
+  deleteImageById(id)
+  renderGallery()
+  renderKeywords()
+  showNotification('Image deleted successfully!')
+  closeDialog()
+}
+
+function createImageObject(imgSource, imgName, creator, date, keywords, colors) {
+  return {
+    imgID: generateUniqueId(),
+    imgSource: imgSource,
+    imgName: imgName,
+    creator: creator,
+    date: date,
+    keyword: keywords,
+    colors: colors,
+    typeImg: 'base',
+  }
+}
+
+function checkMemoryNotEmpty() {
+  if (getAllBaseImages().length < 1) {
+    let images = generateImageArray()
+    images.forEach((image) => saveImage(image))
+    initializeKeywordSearches()
+  }
+}
+
+function saveAndEditImage() {
+  if (!validateInputs()) return
+
+  saveImageToGallery()
+  showNotification('Image saved and ready for editing!')
 }
 
 function generateImageArray() {
@@ -29,8 +138,13 @@ function generateImageArray() {
       imgName: 'Mountain Girl',
       creator: 'John Doe',
       date: '2022-01-01',
-      keywords: ['mountain', 'girl', 'nature', 'landscape', 'outdoors'],
+      keywords: ['mountain', 'girl', 'nature', 'landscape', 'outdoors', 'scenery', 'hiking', 'adventure'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#a1c4fd',
+        backgroundColorMain: '#c2e9fb',
+        textColor: '#ffffff',
+      },
     },
     {
       imgID: 'F6g7H8i9J0',
@@ -38,8 +152,13 @@ function generateImageArray() {
       imgName: 'Trump Speech',
       creator: 'Jane Smith',
       date: '2021-06-15',
-      keywords: ['trump', 'speech', 'politics', 'president', 'event'],
+      keywords: ['trump', 'speech', 'politics', 'president', 'event', 'leader', 'address', 'public'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#d32f2f',
+        backgroundColorMain: '#f44336',
+        textColor: '#ffffff',
+      },
     },
     {
       imgID: 'K1l2M3n4O5',
@@ -47,8 +166,13 @@ function generateImageArray() {
       imgName: 'Dog Kisses',
       creator: 'Alex Johnson',
       date: '2023-02-10',
-      keywords: ['dogs', 'kisses', 'pets', 'animals', 'cute'],
+      keywords: ['dogs', 'kisses', 'pets', 'animals', 'cute', 'love', 'affection', 'companionship'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#ffab91',
+        backgroundColorMain: '#ffccbc',
+        textColor: '#000000',
+      },
     },
     {
       imgID: 'P6q7R8s9T0',
@@ -56,8 +180,13 @@ function generateImageArray() {
       imgName: 'Baby and Dog',
       creator: 'Emily Davis',
       date: '2020-11-20',
-      keywords: ['baby', 'dog', 'cute', 'friendship', 'adorable'],
+      keywords: ['baby', 'dog', 'cute', 'friendship', 'adorable', 'family', 'bond', 'innocence'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#f48fb1',
+        backgroundColorMain: '#f8bbd0',
+        textColor: '#000000',
+      },
     },
     {
       imgID: 'U1v2W3x4Y5',
@@ -65,8 +194,13 @@ function generateImageArray() {
       imgName: 'Beach Kid',
       creator: 'Michael Brown',
       date: '2019-07-30',
-      keywords: ['beach', 'kid', 'summer', 'fun', 'holiday'],
+      keywords: ['beach', 'kid', 'summer', 'fun', 'holiday', 'sun', 'vacation', 'play'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#81d4fa',
+        backgroundColorMain: '#b3e5fc',
+        textColor: '#000000',
+      },
     },
     {
       imgID: 'Z6a7B8c9D0',
@@ -74,8 +208,13 @@ function generateImageArray() {
       imgName: 'Cat Relaxing',
       creator: 'Sarah Wilson',
       date: '2023-05-25',
-      keywords: ['cat', 'relax', 'pet', 'comfortable', 'cute'],
+      keywords: ['cat', 'relax', 'pet', 'comfortable', 'cute', 'rest', 'sleep', 'calm'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#a5d6a7',
+        backgroundColorMain: '#c8e6c9',
+        textColor: '#000000',
+      },
     },
     {
       imgID: 'E1f2G3h4I5',
@@ -83,8 +222,13 @@ function generateImageArray() {
       imgName: 'Wonka Meme',
       creator: 'Daniel Taylor',
       date: '2022-03-18',
-      keywords: ['wonka', 'meme', 'funny', 'classic', 'reaction'],
+      keywords: ['wonka', 'meme', 'funny', 'classic', 'reaction', 'sarcasm', 'humor', 'joke'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#ce93d8',
+        backgroundColorMain: '#e1bee7',
+        textColor: '#000000',
+      },
     },
     {
       imgID: 'J6k7L8m9N0',
@@ -92,8 +236,13 @@ function generateImageArray() {
       imgName: 'Confused Kid',
       creator: 'Laura Martin',
       date: '2021-08-12',
-      keywords: ['confused', 'kid', 'funny', 'expression', 'reaction'],
+      keywords: ['confused', 'kid', 'funny', 'expression', 'reaction', 'puzzled', 'perplexed', 'face'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#ffcc80',
+        backgroundColorMain: '#ffe0b2',
+        textColor: '#000000',
+      },
     },
     {
       imgID: 'O1p2Q3r4S5',
@@ -101,8 +250,13 @@ function generateImageArray() {
       imgName: 'Old Man Thinking',
       creator: 'Kevin Moore',
       date: '2020-09-22',
-      keywords: ['old', 'man', 'thinking', 'pondering', 'wisdom'],
+      keywords: ['old', 'man', 'thinking', 'pondering', 'wisdom', 'reflection', 'thoughtful', 'elder'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#bcaaa4',
+        backgroundColorMain: '#d7ccc8',
+        textColor: '#000000',
+      },
     },
     {
       imgID: 'T6u7V8w9X0',
@@ -110,8 +264,13 @@ function generateImageArray() {
       imgName: 'Surprised Man',
       creator: 'Brian Lee',
       date: '2023-07-01',
-      keywords: ['surprised', 'man', 'reaction', 'shocked', 'expression'],
+      keywords: ['surprised', 'man', 'reaction', 'shocked', 'expression', 'amazed', 'astonished', 'face'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#ffab91',
+        backgroundColorMain: '#ffccbc',
+        textColor: '#000000',
+      },
     },
     {
       imgID: 'Y1z2A3b4C5',
@@ -119,8 +278,13 @@ function generateImageArray() {
       imgName: 'Ancient Aliens',
       creator: 'Kim White',
       date: '2022-10-11',
-      keywords: ['aliens', 'history', 'meme', 'theory', 'extraterrestrial'],
+      keywords: ['aliens', 'history', 'meme', 'theory', 'extraterrestrial', 'space', 'mystery', 'conspiracy'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#a1887f',
+        backgroundColorMain: '#bcaaa4',
+        textColor: '#000000',
+      },
     },
     {
       imgID: 'D6e7F8g9H0',
@@ -128,8 +292,13 @@ function generateImageArray() {
       imgName: 'Dr. Evil',
       creator: 'Chris Harris',
       date: '2021-04-05',
-      keywords: ['dr', 'evil', 'meme', 'funny', 'movie'],
+      keywords: ['dr', 'evil', 'meme', 'funny', 'movie', 'villain', 'humor', 'character'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#90a4ae',
+        backgroundColorMain: '#b0bec5',
+        textColor: '#000000',
+      },
     },
     {
       imgID: 'I1j2K3l4M5',
@@ -137,8 +306,13 @@ function generateImageArray() {
       imgName: 'Dancing Kids',
       creator: 'Patricia Clark',
       date: '2019-11-30',
-      keywords: ['dancing', 'kids', 'fun', 'joy', 'movement'],
+      keywords: ['dancing', 'kids', 'fun', 'joy', 'movement', 'playful', 'celebration', 'activity'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#ffcc80',
+        backgroundColorMain: '#ffe0b2',
+        textColor: '#000000',
+      },
     },
     {
       imgID: 'N6o7P8q9R0',
@@ -146,8 +320,13 @@ function generateImageArray() {
       imgName: 'Trump Gesture',
       creator: 'Steven Young',
       date: '2020-01-25',
-      keywords: ['trump', 'gesture', 'politics', 'leader', 'expression'],
+      keywords: ['trump', 'gesture', 'politics', 'leader', 'expression', 'sign', 'hand', 'symbol'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#d32f2f',
+        backgroundColorMain: '#f44336',
+        textColor: '#ffffff',
+      },
     },
     {
       imgID: 'S1t2U3v4W5',
@@ -155,8 +334,13 @@ function generateImageArray() {
       imgName: 'Happy Baby',
       creator: 'Angela King',
       date: '2022-08-08',
-      keywords: ['happy', 'baby', 'cute', 'smile', 'joy'],
+      keywords: ['happy', 'baby', 'cute', 'smile', 'joy', 'infant', 'laughter', 'delight'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#f48fb1',
+        backgroundColorMain: '#f8bbd0',
+        textColor: '#000000',
+      },
     },
     {
       imgID: 'X6y7Z8a9B0',
@@ -164,8 +348,13 @@ function generateImageArray() {
       imgName: 'Stretched Cat',
       creator: 'George Scott',
       date: '2023-02-28',
-      keywords: ['stretched', 'cat', 'funny', 'pose', 'pet'],
+      keywords: ['stretched', 'cat', 'funny', 'pose', 'pet', 'yoga', 'flexibility', 'relaxation'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#a5d6a7',
+        backgroundColorMain: '#c8e6c9',
+        textColor: '#000000',
+      },
     },
     {
       imgID: 'C1d2E3f4G5',
@@ -173,8 +362,13 @@ function generateImageArray() {
       imgName: 'Obama Laughing',
       creator: 'Donna Green',
       date: '2021-05-14',
-      keywords: ['obama', 'laughing', 'happy', 'smile', 'joy'],
+      keywords: ['obama', 'laughing', 'happy', 'smile', 'joy', 'president', 'fun', 'expression'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#90a4ae',
+        backgroundColorMain: '#b0bec5',
+        textColor: '#000000',
+      },
     },
     {
       imgID: 'H6i7J8k9L0',
@@ -182,8 +376,13 @@ function generateImageArray() {
       imgName: 'Embrace',
       creator: 'Joshua Hall',
       date: '2020-12-24',
-      keywords: ['embrace', 'friends', 'happy', 'hug', 'joy'],
+      keywords: ['embrace', 'friends', 'happy', 'hug', 'joy', 'love', 'support', 'together'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#bcaaa4',
+        backgroundColorMain: '#d7ccc8',
+        textColor: '#000000',
+      },
     },
     {
       imgID: 'M1n2O3p4Q5',
@@ -191,8 +390,13 @@ function generateImageArray() {
       imgName: 'Leo Cheers',
       creator: 'Rebecca Adams',
       date: '2019-06-10',
-      keywords: ['leo', 'cheers', 'happy', 'toast', 'celebration'],
+      keywords: ['leo', 'cheers', 'happy', 'toast', 'celebration', 'smile', 'party', 'joy'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#ffcc80',
+        backgroundColorMain: '#ffe0b2',
+        textColor: '#000000',
+      },
     },
     {
       imgID: 'R6s7T8u9V0',
@@ -200,8 +404,13 @@ function generateImageArray() {
       imgName: 'Matrix Meme',
       creator: 'Samantha Mitchell',
       date: '2022-11-18',
-      keywords: ['matrix', 'meme', 'funny', 'movie', 'reaction'],
+      keywords: ['matrix', 'meme', 'funny', 'movie', 'reaction', 'science fiction', 'character', 'scene'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#90a4ae',
+        backgroundColorMain: '#b0bec5',
+        textColor: '#000000',
+      },
     },
     {
       imgID: 'W1x2Y3z4A5',
@@ -209,8 +418,13 @@ function generateImageArray() {
       imgName: 'One Does Not Simply',
       creator: 'Gary Collins',
       date: '2021-07-27',
-      keywords: ['one', 'does', 'not', 'simply', 'meme'],
+      keywords: ['one', 'does', 'not', 'simply', 'meme', 'funny', 'expression', 'movie'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#a1887f',
+        backgroundColorMain: '#bcaaa4',
+        textColor: '#000000',
+      },
     },
     {
       imgID: 'B6c7D8e9F0',
@@ -218,8 +432,13 @@ function generateImageArray() {
       imgName: 'Oprah Giveaway',
       creator: 'Nicole Carter',
       date: '2020-03-02',
-      keywords: ['oprah', 'giveaway', 'meme', 'show', 'gift'],
+      keywords: ['oprah', 'giveaway', 'meme', 'show', 'gift', 'surprise', 'celebrity', 'host'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#ffcc80',
+        backgroundColorMain: '#ffe0b2',
+        textColor: '#000000',
+      },
     },
     {
       imgID: 'G1h2I3j4K5',
@@ -227,8 +446,13 @@ function generateImageArray() {
       imgName: 'Patrick',
       creator: 'Frankie Rogers',
       date: '2022-09-15',
-      keywords: ['patrick', 'spongebob', 'meme', 'cartoon', 'character'],
+      keywords: ['patrick', 'spongebob', 'meme', 'cartoon', 'character', 'funny', 'animated', 'series'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#ce93d8',
+        backgroundColorMain: '#e1bee7',
+        textColor: '#000000',
+      },
     },
     {
       imgID: 'L6m7N8o9P0',
@@ -236,8 +460,13 @@ function generateImageArray() {
       imgName: 'Putin',
       creator: 'Terry Evans',
       date: '2023-06-21',
-      keywords: ['putin', 'politics', 'leader', 'president', 'russia'],
+      keywords: ['putin', 'politics', 'leader', 'president', 'russia', 'power', 'authority', 'figure'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#d32f2f',
+        backgroundColorMain: '#f44336',
+        textColor: '#ffffff',
+      },
     },
     {
       imgID: 'Q1r2S3t4U5',
@@ -245,18 +474,15 @@ function generateImageArray() {
       imgName: 'X Everywhere',
       creator: 'Andrea Price',
       date: '2021-02-08',
-      keywords: ['x', 'everywhere', 'meme', 'buzz', 'lightyear'],
+      keywords: ['x', 'everywhere', 'meme', 'buzz', 'lightyear', 'toystory', 'movie', 'scene'],
       typeImg: 'base',
+      colors: {
+        backgroundColor: '#81d4fa',
+        backgroundColorMain: '#b3e5fc',
+        textColor: '#000000',
+      },
     },
   ]
 
-  return images.map((image) => createImageObject(image.imgSource, image.imgName, image.creator, image.date, image.keywords))
-}
-
-function checkMemoryNotEmpty() {
-  if (getAllBaseImages().length < 1) {
-    let images = generateImageArray()
-    images.forEach((image) => saveImage(image))
-    initializeKeywordSearches()
-  }
+  return images.map((image) => createImageObject(image.imgSource, image.imgName, image.creator, image.date, image.keywords, image.colors, image.typeImg))
 }

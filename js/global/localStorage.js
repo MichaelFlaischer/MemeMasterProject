@@ -5,6 +5,7 @@ function saveImage(image) {
   const storedImages = JSON.parse(localStorage.getItem(type)) || []
   storedImages.push(image)
   localStorage.setItem(type, JSON.stringify(storedImages))
+  addKeywordsSearch(image.keyword)
 }
 
 function getAllPaintings() {
@@ -16,21 +17,17 @@ function getAllBaseImages() {
 }
 
 function deleteImageById(id) {
-  ;['base', 'painting'].forEach((type) => {
-    const storedImages = JSON.parse(localStorage.getItem(type)) || []
-    const filteredImages = storedImages.filter((image) => image.imgID !== id)
-    localStorage.setItem(type, JSON.stringify(filteredImages))
-  })
+  const filteredImages = getAllBaseImages().filter((image) => image.imgID !== id)
+  localStorage.setItem('base', JSON.stringify(filteredImages))
   updateKeywordSearches()
 }
-
 function getAllKeywords() {
-  const allImages = [...getAllPaintings(), ...getAllBaseImages()]
+  const allImages = [...getAllBaseImages()]
   const keywordsObj = {}
 
   allImages.forEach((image) => {
     image.keyword.forEach((keyword) => {
-      keywordsObj[keyword] = image.imgID
+      keywordsObj[keyword] = 1
     })
   })
 
@@ -38,14 +35,13 @@ function getAllKeywords() {
   const keywordsArray = Object.keys(keywordsObj).map((keyword) => {
     keywords.push(keyword)
   })
-  console.log(keywords)
   return keywords
 }
 
 function getImagesByKeyword(keywordSearch) {
-  const allImages = [...getAllBaseImages()]
-  return allImages.filter((image) => {
-    return image.keyword.some((keyword) => keyword.includes(keywordSearch))
+  const allBaseImages = getAllBaseImages()
+  return allBaseImages.filter((image) => {
+    return image.keyword.some((keyword) => keyword.toLowerCase().includes(keywordSearch.toLowerCase()))
   })
 }
 
@@ -59,7 +55,8 @@ function addKeywordSearch(keyword) {
 
   if (!allKeywords.includes(keyword)) return
 
-  let keywordSearches = JSON.parse(localStorage.getItem('keywordSearches')) || []
+  let keywordSearches = getKeywordSearches()
+  console.log(keywordSearches)
   const keywordIndex = keywordSearches.findIndex((k) => k.keyword === keyword)
 
   if (keywordIndex > -1) {
@@ -71,8 +68,13 @@ function addKeywordSearch(keyword) {
   localStorage.setItem('keywordSearches', JSON.stringify(keywordSearches))
 }
 
+function addKeywordsSearch(keywords) {
+  keywords.map((keyword) => addKeywordSearch(keyword))
+}
+
 function getKeywordSearches() {
-  return JSON.parse(localStorage.getItem('keywordSearches')) || []
+  const keywordSearches = JSON.parse(localStorage.getItem('keywordSearches')) || []
+  return shuffleArray(keywordSearches)
 }
 
 function updateKeywordSearches() {
