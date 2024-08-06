@@ -38,6 +38,9 @@
         <section class="meme-control">
           <div class="text-input">
             <input type="text" id="textLineInput" placeholder="Text line" oninput="updateText()" />
+            <select id="textLineSelect" onchange="selectTextFromList()">
+              <!-- Options will be populated dynamically -->
+            </select>
           </div>
           <div class="text-control">
             <button onclick="addLine()">➕</button>
@@ -79,7 +82,15 @@
             </div>
             <div class="do-in-colums">
               <label for="backgroundColor">Background color: </label>
-              <input type="color" id="backgroundColor" name="backgroundColor" onchange="changeBackground()" value="#FFFFFF" />
+              <select id="backgroundColor" name="backgroundColor" onchange="changeBackground()">
+                <option value="transparent">Transparent</option>
+                <option value="#FFFFFF">White</option>
+                <option value="#000000">Black</option>
+                <option value="#FF0000">Red</option>
+                <option value="#00FF00">Green</option>
+                <option value="#0000FF">Blue</option>
+                <!-- Add more colors as needed -->
+              </select>
             </div>
           </div>
           <div class="emoji-list">

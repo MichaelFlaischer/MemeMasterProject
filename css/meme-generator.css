@@ -136,3 +136,9 @@
     box-shadow: 0 0.3vh 0.6vh rgba(0, 0, 0, 0.1);
   }
 }
+
+#textLineSelect {
+  width: 100%;
+  max-height: 100px;
+  overflow-y: auto;
+}

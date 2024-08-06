@@ -4,21 +4,11 @@ let isDragging = false
 
 let gMemeData = {
   imgId: null,
-  imgSource: null,
-  imgName: null,
-  creator: null,
-  date: null,
-  keywords: [],
-  typeImg: 'meme',
-  colors: {
-    backgroundColor: null,
-    backgroundColorMain: null,
-    textColor: null,
-  },
   canvas: null,
   elCanvas: null,
   imageSize: null,
   baseImage: null,
+  imgSource: null,
   lineInChange: 0,
   imgLines: [],
 }
@@ -54,6 +44,8 @@ function addEventListeners() {
   memeData.elCanvas.addEventListener('touchend', stopDrawing)
   memeData.elCanvas.addEventListener('touchmove', drawOnMove)
   memeData.elCanvas.addEventListener('touchcancel', stopDrawing)
+
+  document.addEventListener('keydown', handleKeyDown)
 }
 
 function startDrawing(e) {
@@ -113,8 +105,7 @@ function updateBaseImage(baseImage, imgSize = null, imgId) {
     memeData.imgId = imgId
   }
 
-  memeData.imgSource = memeData.elCanvas.toDataURL('image/png')
-
+  memeData.imgSource = memeData.elCanvas.toDataURL()
   console.log(memeData.imgId)
   setImageOnCanvas()
 }
@@ -188,10 +179,10 @@ function addLine() {
 
   const newLine = {
     text: '',
-    posText: { x: memeData.elCanvas.width / 2, y: memeData.imgLines.length * 60 },
+    posText: { x: memeData.elCanvas.width / 2.5, y: memeData.imgLines.length + 60 },
     sizeText: 60,
     colorText: '#000000',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'transparent',
     styleText: 'Impact',
     opacity: 1,
     isBold: false,
@@ -213,6 +204,7 @@ function addEmoji(emoji) {
   let lineInChange = memeData.imgLines[lineNumber]
   lineInChange.text += emoji
   updateTextInput()
+  updateSelectList()
   drawTextOnCanvas()
 }
 
@@ -228,13 +220,18 @@ function deleteLine() {
     memeData.lineInChange--
   }
   updateTextInput()
+  updateSelectList()
   drawTextOnCanvas()
 }
 
 function moveLineUp() {
   let memeData = getMemeData()
   let lineNumber = memeData.lineInChange
-  if (lineNumber > 0) memeData.lineInChange--
+  if (lineNumber > 0) {
+    memeData.lineInChange--
+  } else {
+    memeData.lineInChange = memeData.imgLines.length - 1
+  }
   updateControlPanel(memeData.imgLines[memeData.lineInChange])
   drawTextOnCanvas()
 }
@@ -242,7 +239,11 @@ function moveLineUp() {
 function moveLineDown() {
   let memeData = getMemeData()
   let lineNumber = memeData.lineInChange
-  if (lineNumber < memeData.imgLines.length - 1) memeData.lineInChange++
+  if (lineNumber < memeData.imgLines.length - 1) {
+    memeData.lineInChange++
+  } else {
+    memeData.lineInChange = 0
+  }
   updateControlPanel(memeData.imgLines[memeData.lineInChange])
   drawTextOnCanvas()
 }
@@ -253,7 +254,7 @@ function updateControlPanel(line) {
   document.getElementById('textColor').value = line.colorText
   document.getElementById('fontStyle').value = line.styleText
   document.getElementById('opacity').value = line.opacity * 100
-  document.getElementById('backgroundColor').value = line.backgroundColor
+  document.getElementById('backgroundColor').value = line.backgroundColor || 'transparent'
 
   const boldButton = document.querySelector('.toggle-bold')
   if (line.isBold) {
@@ -286,6 +287,45 @@ function updateControlPanel(line) {
     underlineButton.style.textDecoration = 'none'
     underlineButton.style.transform = 'scale(1)'
     underlineButton.style.backgroundColor = ''
+  }
+
+  updateSelectList()
+}
+
+function updateSelectList() {
+  const select = document.getElementById('textLineSelect')
+  const memeData = getMemeData()
+  select.innerHTML = '' // Clear existing options
+
+  memeData.imgLines.forEach((line, index) => {
+    const option = document.createElement('option')
+    option.value = index
+    option.textContent = line.text || `Line ${index + 1}`
+    select.appendChild(option)
+  })
+
+  select.value = memeData.lineInChange
+}
+
+function selectTextFromList() {
+  const select = document.getElementById('textLineSelect')
+  const memeData = getMemeData()
+  const index = parseInt(select.value, 10)
+
+  if (!isNaN(index) && index >= 0 && index < memeData.imgLines.length) {
+    memeData.lineInChange = index
+    updateControlPanel(memeData.imgLines[index])
+    drawTextOnCanvas()
+  }
+}
+
+function handleKeyDown(event) {
+  if (event.key === 'Delete') {
+    deleteLine()
+  } else if (event.key === 'ArrowUp') {
+    moveLineUp()
+  } else if (event.key === 'ArrowDown') {
+    moveLineDown()
   }
 }
 
@@ -339,11 +379,11 @@ function toggleItalic() {
 
   const button = document.querySelector('.toggle-italic')
   if (lineInChange.isInclined) {
-    button.style.styleText = 'italic'
+    button.style.fontStyle = 'italic'
     button.style.transform = 'scale(1.1)'
     button.style.backgroundColor = 'lightgreen'
   } else {
-    button.style.styleText = 'normal'
+    button.style.fontStyle = 'normal'
     button.style.transform = 'scale(1)'
     button.style.backgroundColor = ''
   }
@@ -422,6 +462,7 @@ function updateText() {
   let lineInChange = memeData.imgLines[lineNumber]
   lineInChange.text = document.getElementById('textLineInput').value
 
+  updateSelectList()
   drawTextOnCanvas()
 }
 
@@ -438,6 +479,8 @@ function drawTextOnCanvas() {
   memeData.imgLines.forEach((line, index) => {
     drawTextLine(canvas, line, index, memeData.lineInChange)
   })
+
+  memeData.imgSource = memeData.elCanvas.toDataURL()
 }
 
 function drawTextLine(canvas, line, index, lineInChange) {
@@ -446,10 +489,14 @@ function drawTextLine(canvas, line, index, lineInChange) {
   const styleText = getTextStyle(line)
   canvas.font = styleText
   canvas.globalAlpha = line.opacity
-  canvas.fillStyle = line.colorText
   canvas.textAlign = 'center'
   canvas.textBaseline = 'middle'
 
+  if (line.backgroundColor && line.backgroundColor !== 'transparent') {
+    drawBackground(canvas, line)
+  }
+
+  canvas.fillStyle = line.colorText
   canvas.translate(line.posText.x, line.posText.y)
   canvas.rotate((line.angleSin * Math.PI) / 180)
   canvas.translate(-line.posText.x, -line.posText.y)
@@ -458,15 +505,6 @@ function drawTextLine(canvas, line, index, lineInChange) {
     drawSelectionBox(canvas, line)
   }
 
-  const textWidth = canvas.measureText(line.text).width
-  const rectX = line.posText.x - textWidth / 2 - 5
-  const rectY = line.posText.y - line.sizeText / 2 - 5
-  const rectWidth = textWidth + 10
-  const rectHeight = line.sizeText + 10
-  canvas.fillStyle = line.backgroundColor
-  canvas.fillRect(rectX, rectY, rectWidth, rectHeight)
-
-  canvas.fillStyle = line.colorText
   canvas.fillText(line.text, line.posText.x, line.posText.y)
 
   if (line.isBottomLine) {
@@ -503,4 +541,15 @@ function drawUnderline(canvas, line) {
   canvas.lineWidth = 2
   canvas.strokeStyle = line.colorText
   canvas.stroke()
+}
+
+function drawBackground(canvas, line) {
+  const textWidth = canvas.measureText(line.text).width
+  const rectX = line.posText.x - textWidth / 2 - 5
+  const rectY = line.posText.y - line.sizeText / 2 - 5
+  const rectWidth = textWidth + 10
+  const rectHeight = line.sizeText + 10
+
+  canvas.fillStyle = line.backgroundColor
+  canvas.fillRect(rectX, rectY, rectWidth, rectHeight)
 }
