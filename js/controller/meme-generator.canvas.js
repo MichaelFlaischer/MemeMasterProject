@@ -22,8 +22,8 @@ function createCanvas() {
   memeData.elCanvas = document.querySelector('.canvas')
   memeData.canvas = memeData.elCanvas.getContext('2d')
 
-  const screenWidth = window.innerWidth * 0.5
-  const screenHeight = window.innerHeight * 0.5
+  const screenWidth = window.innerWidth
+  const screenHeight = window.innerHeight
 
   memeData.elCanvas.width = screenWidth
   memeData.elCanvas.height = screenHeight
@@ -121,8 +121,8 @@ function setImageOnCanvas() {
 
   const imageRatio = imgWidth / imgHeight
 
-  const maxCanvasWidth = screenWidth * 0.5
-  const maxCanvasHeight = screenHeight * 0.6
+  const maxCanvasWidth = screenWidth * 0.8
+  const maxCanvasHeight = screenHeight * 0.8
 
   let newWidth, newHeight
 
@@ -295,7 +295,7 @@ function updateControlPanel(line) {
 function updateSelectList() {
   const select = document.getElementById('textLineSelect')
   const memeData = getMemeData()
-  select.innerHTML = '' // Clear existing options
+  select.innerHTML = ''
 
   memeData.imgLines.forEach((line, index) => {
     const option = document.createElement('option')
@@ -552,4 +552,15 @@ function drawBackground(canvas, line) {
 
   canvas.fillStyle = line.backgroundColor
   canvas.fillRect(rectX, rectY, rectWidth, rectHeight)
+}
+
+function disableTouchDefaultOnCanvas() {
+  let memeData = getMemeData()
+  memeData.elCanvas.addEventListener(
+    'touchstart',
+    function (event) {
+      event.preventDefault()
+    },
+    { passive: false }
+  )
 }
