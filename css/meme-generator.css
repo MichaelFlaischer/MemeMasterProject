@@ -14,7 +14,7 @@
 .meme-control {
   display: flex;
   flex-direction: column;
-  width: 40vh;
+  width: 60vh;
   max-width: 80vh;
 
   padding: 1vh;

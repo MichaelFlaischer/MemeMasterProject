@@ -4,6 +4,17 @@ let isDragging = false
 
 let gMemeData = {
   imgId: null,
+  imgSource: null,
+  imgName: null,
+  creator: null,
+  date: null,
+  keywords: [],
+  typeImg: 'meme',
+  colors: {
+    backgroundColor: null,
+    backgroundColorMain: null,
+    textColor: null,
+  },
   canvas: null,
   elCanvas: null,
   imageSize: null,
@@ -11,6 +22,7 @@ let gMemeData = {
   lineInChange: 0,
   imgLines: [],
 }
+
 function getMemeData() {
   return gMemeData
 }
@@ -101,6 +113,8 @@ function updateBaseImage(baseImage, imgSize = null, imgId) {
     memeData.imgId = imgId
   }
 
+  memeData.imgSource = memeData.elCanvas.toDataURL('image/png')
+
   console.log(memeData.imgId)
   setImageOnCanvas()
 }
@@ -177,6 +191,7 @@ function addLine() {
     posText: { x: memeData.elCanvas.width / 2, y: memeData.imgLines.length * 60 },
     sizeText: 60,
     colorText: '#000000',
+    backgroundColor: '#FFFFFF',
     styleText: 'Impact',
     opacity: 1,
     isBold: false,
@@ -238,6 +253,7 @@ function updateControlPanel(line) {
   document.getElementById('textColor').value = line.colorText
   document.getElementById('fontStyle').value = line.styleText
   document.getElementById('opacity').value = line.opacity * 100
+  document.getElementById('backgroundColor').value = line.backgroundColor
 
   const boldButton = document.querySelector('.toggle-bold')
   if (line.isBold) {
@@ -391,6 +407,15 @@ function changeTextColor() {
   drawTextOnCanvas()
 }
 
+function changeBackground() {
+  let memeData = getMemeData()
+  let lineNumber = memeData.lineInChange
+  let lineInChange = memeData.imgLines[lineNumber]
+  lineInChange.backgroundColor = document.getElementById('backgroundColor').value
+
+  drawTextOnCanvas()
+}
+
 function updateText() {
   let memeData = getMemeData()
   let lineNumber = memeData.lineInChange
@@ -433,6 +458,15 @@ function drawTextLine(canvas, line, index, lineInChange) {
     drawSelectionBox(canvas, line)
   }
 
+  const textWidth = canvas.measureText(line.text).width
+  const rectX = line.posText.x - textWidth / 2 - 5
+  const rectY = line.posText.y - line.sizeText / 2 - 5
+  const rectWidth = textWidth + 10
+  const rectHeight = line.sizeText + 10
+  canvas.fillStyle = line.backgroundColor
+  canvas.fillRect(rectX, rectY, rectWidth, rectHeight)
+
+  canvas.fillStyle = line.colorText
   canvas.fillText(line.text, line.posText.x, line.posText.y)
 
   if (line.isBottomLine) {
