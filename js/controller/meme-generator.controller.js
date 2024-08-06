@@ -48,23 +48,3 @@ function updateTextInput() {
 
   document.getElementById('textLineInput').value = memeData.imgLines[lineNumber].text
 }
-
-function resetMemeData() {
-  const memeData = getMemeData()
-
-  memeData.imgLines = [
-    {
-      text: document.getElementById('textLineInput').value,
-      posText: { x: 0, y: 0 },
-      sizeText: document.getElementById('textSize').value,
-      colorText: document.getElementById('textColor').value,
-      styleText: document.getElementById('fontStyle').value,
-      opacity: document.getElementById('opacity').value,
-      isBold: document.querySelector('.toggle-bold').style.fontWeight === 'bold',
-      isInclined: document.querySelector('.toggle-italic').style.fontStyle === 'italic',
-      isBottomLine: document.querySelector('.toggle-underline').style.textDecoration === 'underline',
-      opacity: document.getElementById('opacity').value / 100 || 1,
-      angleSin: 1,
-    },
-  ]
-}

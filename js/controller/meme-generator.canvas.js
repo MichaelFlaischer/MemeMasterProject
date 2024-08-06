@@ -9,20 +9,7 @@ let gMemeData = {
   imageSize: null,
   baseImage: null,
   lineInChange: 0,
-  imgLines: [
-    {
-      text: '',
-      posText: { x: 0, y: 0 },
-      sizeText: 60,
-      colorText: '#000000',
-      styleText: 'Impact',
-      opacity: 1,
-      isBold: false,
-      isInclined: false,
-      isBottomLine: false,
-      angleSin: 1,
-    },
-  ],
+  imgLines: [],
 }
 function getMemeData() {
   return gMemeData
@@ -198,6 +185,7 @@ function addLine() {
     angleSin: 1,
   }
   memeData.imgLines.push(newLine)
+
   memeData.lineInChange = memeData.imgLines.length - 1
 
   updateControlPanel(newLine)
@@ -422,35 +410,63 @@ function drawTextOnCanvas() {
     canvas.drawImage(memeData.baseImage, 0, 0, memeData.elCanvas.width, memeData.elCanvas.height)
   }
 
-  memeData.imgLines.forEach((line) => {
-    canvas.save()
-
-    const styleText = `${line.isBold ? 'bold' : 'normal'} ${line.isInclined ? 'italic' : 'normal'} ${line.sizeText}px ${line.styleText}`
-    canvas.font = styleText
-    canvas.globalAlpha = line.opacity
-    canvas.fillStyle = line.colorText
-    canvas.textAlign = 'center'
-    canvas.textBaseline = 'middle'
-
-    canvas.translate(line.posText.x, line.posText.y)
-    canvas.rotate((line.angleSin * Math.PI) / 180)
-    canvas.translate(-line.posText.x, -line.posText.y)
-
-    canvas.fillText(line.text, line.posText.x, line.posText.y)
-
-    if (line.isBottomLine) {
-      const textWidth = canvas.measureText(line.text).width
-      const startX = line.posText.x - textWidth / 2
-      const endX = line.posText.x + textWidth / 2
-      const underlineY = line.posText.y + line.sizeText + 10
-      canvas.beginPath()
-      canvas.moveTo(startX, underlineY)
-      canvas.lineTo(endX, underlineY)
-      canvas.lineWidth = 2
-      canvas.strokeStyle = line.colorText
-      canvas.stroke()
-    }
-
-    canvas.restore()
+  memeData.imgLines.forEach((line, index) => {
+    drawTextLine(canvas, line, index, memeData.lineInChange)
   })
+}
+
+function drawTextLine(canvas, line, index, lineInChange) {
+  canvas.save()
+
+  const styleText = getTextStyle(line)
+  canvas.font = styleText
+  canvas.globalAlpha = line.opacity
+  canvas.fillStyle = line.colorText
+  canvas.textAlign = 'center'
+  canvas.textBaseline = 'middle'
+
+  canvas.translate(line.posText.x, line.posText.y)
+  canvas.rotate((line.angleSin * Math.PI) / 180)
+  canvas.translate(-line.posText.x, -line.posText.y)
+
+  if (index === lineInChange) {
+    drawSelectionBox(canvas, line)
+  }
+
+  canvas.fillText(line.text, line.posText.x, line.posText.y)
+
+  if (line.isBottomLine) {
+    drawUnderline(canvas, line)
+  }
+
+  canvas.restore()
+}
+
+function getTextStyle(line) {
+  return `${line.isBold ? 'bold' : 'normal'} ${line.isInclined ? 'italic' : 'normal'} ${line.sizeText}px ${line.styleText}`
+}
+
+function drawSelectionBox(canvas, line) {
+  const textWidth = canvas.measureText(line.text).width
+  const rectX = line.posText.x - textWidth / 2 - 5
+  const rectY = line.posText.y - line.sizeText / 2 - 5
+  const rectWidth = textWidth + 10
+  const rectHeight = line.sizeText + 10
+  canvas.setLineDash([5, 5])
+  canvas.strokeStyle = 'white'
+  canvas.lineWidth = 2
+  canvas.strokeRect(rectX, rectY, rectWidth, rectHeight)
+}
+
+function drawUnderline(canvas, line) {
+  const textWidth = canvas.measureText(line.text).width
+  const startX = line.posText.x - textWidth / 2
+  const endX = line.posText.x + textWidth / 2
+  const underlineY = line.posText.y + line.sizeText / 4 + 15
+  canvas.beginPath()
+  canvas.moveTo(startX, underlineY)
+  canvas.lineTo(endX, underlineY)
+  canvas.lineWidth = 2
+  canvas.strokeStyle = line.colorText
+  canvas.stroke()
 }

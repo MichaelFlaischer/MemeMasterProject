@@ -13,7 +13,7 @@ function onInitMeme() {
     if (imgType === 'base') {
       getImageDimensions(image.imgSource).then((imgSize) => {
         renderImage(image.imgSource, imgSize, generateUniqueId())
-        resetMemeData()
+        addLine()
       })
     } else if (imgType === 'meme') {
       //נוציא לפי ID את האובייקט של MEME ונחזיר את המידע שלו לקבנאס
