@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/meme-generator.css" />
     <link rel="stylesheet" href="css/menu-bar.css" />
+    <link rel="stylesheet" href="css/dialog.css" />
+    <link rel="stylesheet" href="css/input.css" />
     <link href="https://fonts.googleapis.com/css2?family=Arial:wght@400;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Verdana:wght@400;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Tahoma:wght@400;700&display=swap" rel="stylesheet" />
@@ -38,9 +40,7 @@
         <section class="meme-control">
           <div class="text-input">
             <input type="text" id="textLineInput" placeholder="Text line" oninput="updateText()" />
-            <select id="textLineSelect" onchange="selectTextFromList()">
-              <!-- Options will be populated dynamically -->
-            </select>
+            <select id="textLineSelect" onchange="selectTextFromList()"></select>
           </div>
           <div class="text-control">
             <button onclick="addLine()">➕</button>
@@ -89,7 +89,6 @@
                 <option value="#FF0000">Red</option>
                 <option value="#00FF00">Green</option>
                 <option value="#0000FF">Blue</option>
-                <!-- Add more colors as needed -->
               </select>
             </div>
           </div>
@@ -125,9 +124,13 @@
             <button onclick="addEmoji('😣')">😣</button>
             <button onclick="addEmoji('😥')">😥</button>
           </div>
-          <div class="meme-save"></div>
         </section>
       </div>
+      <section class="meme-save">
+        <button onclick="showSaveDialog()">Save to Gallery</button>
+        <button onclick="downloadImage()">Download Image</button>
+        <button onclick="shareOnFacebook()">Share on Facebook</button>
+      </section>
     </main>
     <footer>
       <h1><p>&copy; Michael Flaischer</p></h1>

@@ -43,7 +43,7 @@ function getAllKeywords() {
 function getImagesByKeyword(keywordSearch) {
   const allBaseImages = [...getAllBaseImages(), ...getAllMeme()]
   return allBaseImages.filter((image) => {
-    return image.keyword.some((keyword) => keyword.toLowerCase().includes(keywordSearch.toLowerCase()))
+    return image.keywords.some((keyword) => keyword.toLowerCase().includes(keywordSearch.toLowerCase()))
   })
 }
 

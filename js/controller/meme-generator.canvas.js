@@ -4,11 +4,21 @@ let isDragging = false
 
 let gMemeData = {
   imgId: null,
+  imgSource: null,
+  imgName: null,
+  creator: null,
+  date: null,
+  keyword: [],
+  typeImg: 'meme',
+  colors: {
+    backgroundColor: null,
+    backgroundColorMain: null,
+    textColor: null,
+  },
   canvas: null,
   elCanvas: null,
   imageSize: null,
   baseImage: null,
-  imgSource: null,
   lineInChange: 0,
   imgLines: [],
 }
@@ -22,8 +32,8 @@ function createCanvas() {
   memeData.elCanvas = document.querySelector('.canvas')
   memeData.canvas = memeData.elCanvas.getContext('2d')
 
-  const screenWidth = window.innerWidth
-  const screenHeight = window.innerHeight
+  const screenWidth = window.innerWidth * 0.5
+  const screenHeight = window.innerHeight * 0.5
 
   memeData.elCanvas.width = screenWidth
   memeData.elCanvas.height = screenHeight
@@ -121,8 +131,8 @@ function setImageOnCanvas() {
 
   const imageRatio = imgWidth / imgHeight
 
-  const maxCanvasWidth = screenWidth * 0.8
-  const maxCanvasHeight = screenHeight * 0.8
+  const maxCanvasWidth = screenWidth * 0.5
+  const maxCanvasHeight = screenHeight * 0.5
 
   let newWidth, newHeight
 
@@ -179,7 +189,7 @@ function addLine() {
 
   const newLine = {
     text: '',
-    posText: { x: memeData.elCanvas.width / 2.5, y: memeData.imgLines.length + 60 },
+    posText: { x: memeData.elCanvas.width / 2, y: memeData.imgLines.length * 60 },
     sizeText: 60,
     colorText: '#000000',
     backgroundColor: 'transparent',
@@ -326,6 +336,8 @@ function handleKeyDown(event) {
     moveLineUp()
   } else if (event.key === 'ArrowDown') {
     moveLineDown()
+  } else if (event.key === 'Enter') {
+    addLine()
   }
 }
 
@@ -563,4 +575,82 @@ function disableTouchDefaultOnCanvas() {
     },
     { passive: false }
   )
+}
+
+function saveToGallery() {
+  const memeData = getMemeData()
+  const imageSrc = memeData.elCanvas.toDataURL('image/png')
+  memeData.imgSource = imageSrc
+  memeData.imgName = document.getElementById('imageName').value
+  memeData.creator = document.getElementById('creatorName').value
+  memeData.date = new Date().toISOString().split('T')[0]
+  memeData.keyword = document.getElementById('imgKeywords').value.split(',')
+  memeData.colors = {
+    backgroundColor: document.getElementById('backgroundColor').value,
+    backgroundColorMain: document.getElementById('backgroundColorMain').value,
+    textColor: document.getElementById('textColor').value,
+  }
+
+  saveImage(memeData)
+}
+
+function downloadImage() {
+  const memeData = getMemeData()
+  const link = document.createElement('a')
+  link.href = memeData.elCanvas.toDataURL('image/png')
+  link.download = 'meme.png'
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}
+
+function showSaveDialog() {
+  const memeData = getMemeData()
+  const imageSrc = memeData.elCanvas.toDataURL('image/png')
+
+  const dialog = document.querySelector('.dialog')
+  dialog.innerHTML = `
+    <div class="dialog-content">
+      <img src="${imageSrc}" alt="Meme Thumbnail" style="width: 100px; height: 100px;" />
+      <div class="dialog-info">
+        <table>
+          <tr>
+            <td>Image Name</td>
+            <td><input type="text" id="imageName" placeholder="Image Name" required /></td>
+          </tr>
+          <tr>
+            <td>Creator Name</td>
+            <td><input type="text" id="creatorName" placeholder="Creator Name" required /></td>
+          </tr>
+          <tr style="display:none;">
+            <td><input type="text" id="typeImg" value="base" disabled /></td>
+          </tr>
+          <tr>
+            <td>Keywords</td>
+            <td><input type="text" id="imgKeywords" placeholder="Keywords (comma separated)" required /></td>
+          </tr>
+          <tr>
+            <td>Background Color</td>
+            <td><input type="color" id="backgroundColor" class="pointer" value="#ffffff" required /></td>
+          </tr>
+          <tr>
+            <td>Background Color Main</td>
+            <td><input type="color" id="backgroundColorMain" class="pointer" value="#ffffff" required /></td>
+          </tr>
+          <tr>
+            <td>Text Color</td>
+            <td><input type="color" id="textColor" class="pointer" value="#000000" required /></td>
+          </tr>
+        </table>
+      </div>
+      <button onclick="saveToGallery()">Save</button>
+      <button onclick="closeDialog()">Close</button>
+    </div>
+  `
+  dialog.style.display = 'block'
+}
+
+function closeDialog() {
+  const dialog = document.querySelector('.dialog')
+  dialog.style.display = 'none'
 }
