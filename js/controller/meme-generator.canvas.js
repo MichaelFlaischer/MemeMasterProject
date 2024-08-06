@@ -1,67 +1,100 @@
 'use strict'
 
-var gMemeData = {
+let gMemeData = {
+  imgId: null,
   canvas: null,
   elCanvas: null,
-  imgId: null,
   imageSize: null,
   baseImage: null,
-  imgLines: [{ text: '', posText: { x: 0, y: 0 }, sizeText: null, colorText: null, isSelected: false, angleSin: 1 }],
+  imgLines: [
+    {
+      text: '',
+      posText: { x: 0, y: 0 },
+      sizeText: null,
+      colorText: null,
+      isSelected: false,
+      isBold: false,
+      isInclined: false,
+      isBottomLine: false,
+      angleSin: 1,
+    },
+  ],
+}
+
+function getMemeData() {
+  return gMemeData
 }
 
 function createCanvas() {
-  gMemeData.elCanvas = document.querySelector('.canvas')
-  gMemeData.canvas = gMemeData.elCanvas.getContext('2d')
+  let memeData = getMemeData()
+  memeData.elCanvas = document.querySelector('.canvas')
+  memeData.canvas = memeData.elCanvas.getContext('2d')
 
-  gMemeData.canvas.clearRect(0, 0, gMemeData.elCanvas.width, gMemeData.elCanvas.height)
-  gMemeData.canvas.fillStyle = getBGColor()
-  gMemeData.canvas.fillRect(0, 0, gMemeData.elCanvas.width, gMemeData.elCanvas.height)
+  const screenWidth = window.innerWidth * 0.5
+  const screenHeight = window.innerHeight * 0.5
+
+  memeData.elCanvas.width = screenWidth
+  memeData.elCanvas.height = screenHeight
+
+  memeData.canvas.clearRect(0, 0, screenWidth, screenHeight)
+  drawDiagonalLines(memeData.canvas, screenWidth, screenHeight)
 }
 
 function addEventListeners() {
-  gMemeData.elCanvas.addEventListener('mousedown', startDrawing)
-  gMemeData.elCanvas.addEventListener('mouseup', stopDrawing)
-  gMemeData.elCanvas.addEventListener('mousemove', drawOnMove)
-  gMemeData.elCanvas.addEventListener('touchstart', startDrawing)
-  gMemeData.elCanvas.addEventListener('touchend', stopDrawing)
-  gMemeData.elCanvas.addEventListener('touchmove', drawOnMove)
+  let memeData = getMemeData()
+  memeData.elCanvas.addEventListener('mousedown', startDrawing)
+  memeData.elCanvas.addEventListener('mouseup', stopDrawing)
+  memeData.elCanvas.addEventListener('mousemove', drawOnMove)
+  memeData.elCanvas.addEventListener('touchstart', startDrawing)
+  memeData.elCanvas.addEventListener('touchend', stopDrawing)
+  memeData.elCanvas.addEventListener('touchmove', drawOnMove)
 }
 
 function startDrawing(e) {
+  let memeData = getMemeData()
+
   // Implement the start drawing logic
 }
 
 function stopDrawing(e) {
+  let memeData = getMemeData()
+
   // Implement the stop drawing logic
 }
 
 function drawOnMove(e) {
+  let memeData = getMemeData()
+
   // Implement the drawing logic
 }
 
 function updateBaseImage(baseImage, imgSize = null, imgId) {
+  let memeData = getMemeData()
+
   toggleCanvas()
 
-  gMemeData.baseImage = baseImage
+  memeData.baseImage = baseImage
 
   if (imgSize.width === undefined) {
-    gMemeData.imageSize = { width: baseImage.width, height: baseImage.height }
-    gMemeData.imgId = generateUniqueId()
+    memeData.imageSize = { width: baseImage.width, height: baseImage.height }
+    memeData.imgId = generateUniqueId()
   } else {
-    gMemeData.imageSize = imgSize
-    gMemeData.imgId = imgId
+    memeData.imageSize = imgSize
+    memeData.imgId = imgId
   }
 
-  console.log(gMemeData.imgId)
+  console.log(memeData.imgId)
   setImageOnCanvas()
 }
 
 function setImageOnCanvas() {
+  let memeData = getMemeData()
+
   const screenWidth = window.innerWidth
   const screenHeight = window.innerHeight
 
-  const imgWidth = gMemeData.imageSize.width
-  const imgHeight = gMemeData.imageSize.height
+  const imgWidth = memeData.imageSize.width
+  const imgHeight = memeData.imageSize.height
 
   const imageRatio = imgWidth / imgHeight
 
@@ -87,11 +120,31 @@ function setImageOnCanvas() {
     newWidth = newHeight * imageRatio
   }
 
-  gMemeData.elCanvas.width = newWidth
-  gMemeData.elCanvas.height = newHeight
+  memeData.elCanvas.width = newWidth
+  memeData.elCanvas.height = newHeight
 
-  gMemeData.imageSize = { width: newWidth, height: newHeight }
+  memeData.imageSize = { width: newWidth, height: newHeight }
 
-  gMemeData.canvas.clearRect(0, 0, newWidth, newHeight)
-  gMemeData.canvas.drawImage(gMemeData.baseImage, 0, 0, newWidth, newHeight)
+  memeData.canvas.clearRect(0, 0, newWidth, newHeight)
+  memeData.canvas.drawImage(memeData.baseImage, 0, 0, newWidth, newHeight)
+}
+
+function drawDiagonalLines(elCanvas, width, height) {
+  const lineSpacing = 20
+  elCanvas.strokeStyle = '#ccc'
+  elCanvas.lineWidth = 1
+
+  for (let i = -height; i < width; i += lineSpacing) {
+    elCanvas.beginPath()
+    elCanvas.moveTo(i, 0)
+    elCanvas.lineTo(i + height, height)
+    elCanvas.stroke()
+  }
+
+  for (let i = 0; i < width + height; i += lineSpacing) {
+    elCanvas.beginPath()
+    elCanvas.moveTo(i, height)
+    elCanvas.lineTo(i - height, 0)
+    elCanvas.stroke()
+  }
 }
