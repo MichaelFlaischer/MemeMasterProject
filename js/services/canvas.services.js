@@ -65,12 +65,8 @@ function startDrawing(e) {
 
   memeData.imgLines.forEach((line, index) => {
     const textWidth = memeData.canvas.measureText(line.text).width
-    if (
-      x >= line.posText.x - textWidth / 2 &&
-      x <= line.posText.x + textWidth / 2 &&
-      y >= line.posText.y - line.sizeText / 2 &&
-      y <= line.posText.y + line.sizeText / 2
-    ) {
+    const textHeight = line.sizeText * 1.2
+    if (x >= line.posText.x - textWidth && x <= line.posText.x + textWidth && y >= line.posText.y - textHeight / 2 && y <= line.posText.y + textHeight / 2) {
       memeData.lineInChange = index
       updateControlPanel(line)
       isDragging = true
