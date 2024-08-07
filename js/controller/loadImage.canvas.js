@@ -38,7 +38,7 @@ function renderImage(imgSrc, size = null, imgId = null) {
 
   img.onload = () => {
     if (!size) size = { width: img.width, height: img.height }
-    updateBaseImage(img, imgId, size)
+    updateBaseImage(img, size, imgId)
   }
 }
 

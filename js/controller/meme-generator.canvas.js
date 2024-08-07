@@ -5,6 +5,7 @@ let isDragging = false
 let gMemeData = {
   imgID: null,
   imgSource: null,
+  imgDataUrl: null,
   imgName: null,
   creator: null,
   date: null,
@@ -25,6 +26,21 @@ let gMemeData = {
 
 function getMemeData() {
   return gMemeData
+}
+
+function setMemeData(memeData) {
+  gMemeData = memeData
+
+  memeData.elCanvas = document.querySelector('.canvas')
+  memeData.canvas = memeData.elCanvas.getContext('2d')
+
+  const screenWidth = window.innerWidth * 0.5
+  const screenHeight = window.innerHeight * 0.5
+
+  memeData.elCanvas.width = screenWidth
+  memeData.elCanvas.height = screenHeight
+
+  memeData.canvas.clearRect(0, 0, screenWidth, screenHeight)
 }
 
 function createCanvas() {
@@ -106,6 +122,7 @@ function updateBaseImage(baseImage, imgSize = null, imgID) {
   toggleCanvas()
 
   memeData.baseImage = baseImage
+  memeData.imgDataUrl = baseImage.src
 
   if (imgSize.width === undefined) {
     memeData.imageSize = { width: baseImage.width, height: baseImage.height }
@@ -158,10 +175,16 @@ function setImageOnCanvas() {
 
   memeData.imageSize = { width: newWidth, height: newHeight }
 
-  memeData.canvas.clearRect(0, 0, newWidth, newHeight)
-  memeData.canvas.drawImage(memeData.baseImage, 0, 0, newWidth, newHeight)
+  let img = new Image()
+  img.src = memeData.imgDataUrl
 
-  drawTextOnCanvas()
+  img.onload = () => {
+    memeData.canvas.clearRect(0, 0, newWidth, newHeight)
+    memeData.canvas.drawImage(img, 0, 0, newWidth, newHeight)
+    drawTextOnCanvas()
+  }
+
+  memeData.baseImage = img
 }
 
 function drawDiagonalLines(elCanvas, width, height) {
@@ -596,7 +619,7 @@ function saveToGallery() {
     backgroundColorMain: document.getElementById('backgroundColorMain').value,
     textColor: document.getElementById('userTextColor').value,
   }
-  console.log(memeData.colors)
+  memeData.imgDataUrl = memeData.baseImage.src
   saveImage(memeData)
   closeDialog()
   drawTextOnCanvas(false)

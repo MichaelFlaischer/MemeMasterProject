@@ -16,9 +16,17 @@ function onInitMeme() {
         addLine()
       })
     } else if (imgType === 'meme') {
-      //נוציא לפי ID את האובייקט של MEME ונחזיר את המידע שלו לקבנאס
+      loadMeme(image)
     }
   } else {
     openSelectModal()
   }
+}
+
+function loadMeme(image) {
+  setMemeData(image)
+  let memeData = getMemeData()
+  memeData.imgID = generateUniqueId()
+  setImageOnCanvas()
+  memeData.imgLines.forEach((line) => updateControlPanel(line))
 }
