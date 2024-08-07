@@ -23,10 +23,6 @@ function openDialog(id = null, type = null) {
 }
 
 function deleteImage(id, type) {
-  console.log('*************************')
-  console.log(id)
-  console.log(type)
-  console.log('*************************')
   deleteImageById(id, type)
   renderGallery()
   renderKeywords()

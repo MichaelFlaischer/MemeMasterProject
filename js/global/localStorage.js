@@ -17,7 +17,6 @@ function getAllBaseImages() {
 }
 
 function deleteImageById(id, type) {
-  console.log(type)
   const allImages = JSON.parse(localStorage.getItem(type)) || []
   const filteredImages = allImages.filter((image) => image.imgID !== id)
   localStorage.setItem(type, JSON.stringify(filteredImages))

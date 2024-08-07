@@ -13,15 +13,12 @@ function renderGallery(keyword = null) {
     showByType(type)
   } else {
     let images = getImagesByKeyword(keyword)
-    console.log(images)
     addKeywordSearch(keyword)
     if (type !== 'all') {
       images = images.filter((image) => image.typeImg === type)
     }
 
     images.forEach((image) => {
-      console.log(image.typeImg)
-
       gallery.innerHTML += `
       <div class="image-container">
       <p>${image.imgName}</p>
@@ -34,10 +31,8 @@ function renderGallery(keyword = null) {
 function openShowModal(id, type) {
   const images = JSON.parse(localStorage.getItem(type)) || []
   const image = images.find((image) => image.imgID === id)
-  console.log()
   if (!image) return
 
-  console.log(image)
   let src = image.imgSource
   let alt = image.imgName
   document.querySelector('.dialog').innerHTML = `
@@ -78,7 +73,7 @@ function openShowModal(id, type) {
       </table>
     </div>
     <button onclick="saveColors('${image.colors.backgroundColor}', '${image.colors.backgroundColorMain}', '${image.colors.textColor}')">Change Theme</button>
-    <button onclick="window.location.href='meme-generator.html?imgtype=${image.typeImg}&imgid=${image.imgID}'">Create MEME</button>
+    <button onclick="window.location.href='generator.html?imgtype=${image.typeImg}&imgid=${image.imgID}'">Create MEME</button>
     <button onclick="deleteImage('${id}','${image.typeImg}')">Delete This Image</button>
   </div>`
 
@@ -286,8 +281,6 @@ function showByType() {
       </div>`
 
   images.forEach((image) => {
-    console.log(image.typeImg)
-
     gallery.innerHTML += `
       <div class="image-container">
         <p>${image.imgName}</p>

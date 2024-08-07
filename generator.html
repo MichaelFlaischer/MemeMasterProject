@@ -5,29 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gallery</title>
     <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/meme-generator.css" />
+    <link rel="stylesheet" href="css/generator.css" />
     <link rel="stylesheet" href="css/menu-bar.css" />
     <link rel="stylesheet" href="css/dialog.css" />
     <link rel="stylesheet" href="css/input.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Arial:wght@400;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Verdana:wght@400;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Tahoma:wght@400;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Courier:wght@400;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Times+New+Roman:wght@400;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Palatino:wght@400;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Garamond:wght@400;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Comic+Sans+MS:wght@400;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Impact&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Arial:wght@400;700&family=Verdana:wght@400;700&family=Tahoma:wght@400;700&family=Courier:wght@400;700&family=Times+New+Roman:wght@400;700&family=Georgia:wght@400;700&family=Palatino:wght@400;700&family=Garamond:wght@400;700&family=Comic+Sans+MS:wght@400;700&family=Impact&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body onload="onInitMeme()">
     <script src="js/global/utils.js"></script>
     <script src="js/global/localStorage.js"></script>
-    <script src="js/services/meme-generator.services.js"></script>
-    <script src="js/controller/meme-generator.controller.js"></script>
-    <script src="js/controller/meme-generator.canvas.js"></script>
-    <script src="js/controller/loadImage.canvas.js"></script>
     <script src="js/controller/menu-bar.controller.js"></script>
+
+    <script src="js/services/canvas.services.js"></script>
+    <script src="js/services/generator-image.services.js"></script>
+    <script src="js/services/generator-init.services.js"></script>
+
+    <script src="js/controller/canvas.controller.js"></script>
+    <script src="js/controller/generator.controller.js"></script>
     <header>
       <h1>Meme Generator</h1>
     </header>
@@ -123,6 +120,12 @@
             <button onclick="addEmoji('😏')">😏</button>
             <button onclick="addEmoji('😣')">😣</button>
             <button onclick="addEmoji('😥')">😥</button>
+          </div>
+          <div class="text-move">
+            <button onclick="moveText('up')">⬆️</button>
+            <button onclick="moveText('down')">⬇️</button>
+            <button onclick="moveText('left')">⬅️</button>
+            <button onclick="moveText('right')">➡️</button>
           </div>
         </section>
       </div>
