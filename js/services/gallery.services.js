@@ -14,16 +14,20 @@ function saveAndEditImage() {
   showNotification('Image saved and ready for editing!')
 }
 
-function openDialog(id = null) {
+function openDialog(id = null, type = null) {
   if (id !== null) {
-    openShowModal(id)
+    openShowModal(id, type)
   } else {
     openEditModal()
   }
 }
 
-function deleteImage(id) {
-  deleteImageById(id)
+function deleteImage(id, type) {
+  console.log('*************************')
+  console.log(id)
+  console.log(type)
+  console.log('*************************')
+  deleteImageById(id, type)
   renderGallery()
   renderKeywords()
   showNotification('Image deleted successfully!')

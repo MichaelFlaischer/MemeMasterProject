@@ -3,7 +3,7 @@
 let isDragging = false
 
 let gMemeData = {
-  imgId: null,
+  imgID: null,
   imgSource: null,
   imgName: null,
   creator: null,
@@ -100,7 +100,7 @@ function drawOnMove(e) {
   drawTextOnCanvas()
 }
 
-function updateBaseImage(baseImage, imgSize = null, imgId) {
+function updateBaseImage(baseImage, imgSize = null, imgID) {
   let memeData = getMemeData()
 
   toggleCanvas()
@@ -109,14 +109,14 @@ function updateBaseImage(baseImage, imgSize = null, imgId) {
 
   if (imgSize.width === undefined) {
     memeData.imageSize = { width: baseImage.width, height: baseImage.height }
-    memeData.imgId = generateUniqueId()
+    memeData.imgID = generateUniqueId()
   } else {
     memeData.imageSize = imgSize
-    memeData.imgId = imgId
+    memeData.imgID = imgID
   }
 
   memeData.imgSource = memeData.elCanvas.toDataURL()
-  console.log(memeData.imgId)
+  console.log(memeData.imgID)
   setImageOnCanvas()
 }
 
@@ -204,6 +204,7 @@ function addLine() {
 
   memeData.lineInChange = memeData.imgLines.length - 1
 
+  focusOnInputText()
   updateControlPanel(newLine)
   drawTextOnCanvas()
 }
@@ -338,6 +339,8 @@ function handleKeyDown(event) {
     moveLineDown()
   } else if (event.key === 'Enter') {
     addLine()
+  } else if (event.key === 'Escape') {
+    closeDialog()
   }
 }
 
@@ -471,14 +474,16 @@ function changeBackground() {
 function updateText() {
   let memeData = getMemeData()
   let lineNumber = memeData.lineInChange
+  if (memeData.imgLines.length === 0) addLine()
   let lineInChange = memeData.imgLines[lineNumber]
   lineInChange.text = document.getElementById('textLineInput').value
 
   updateSelectList()
+  updateControlPanel(lineInChange) // תיקון
   drawTextOnCanvas()
 }
 
-function drawTextOnCanvas() {
+function drawTextOnCanvas(hideSelection = false) {
   const memeData = getMemeData()
   const canvas = memeData.canvas
 
@@ -489,13 +494,13 @@ function drawTextOnCanvas() {
   }
 
   memeData.imgLines.forEach((line, index) => {
-    drawTextLine(canvas, line, index, memeData.lineInChange)
+    drawTextLine(canvas, line, index, memeData.lineInChange, hideSelection)
   })
 
   memeData.imgSource = memeData.elCanvas.toDataURL()
 }
 
-function drawTextLine(canvas, line, index, lineInChange) {
+function drawTextLine(canvas, line, index, lineInChange, hideSelection = false) {
   canvas.save()
 
   const styleText = getTextStyle(line)
@@ -513,7 +518,7 @@ function drawTextLine(canvas, line, index, lineInChange) {
   canvas.rotate((line.angleSin * Math.PI) / 180)
   canvas.translate(-line.posText.x, -line.posText.y)
 
-  if (index === lineInChange) {
+  if (index === lineInChange && !hideSelection) {
     drawSelectionBox(canvas, line)
   }
 
@@ -578,23 +583,27 @@ function disableTouchDefaultOnCanvas() {
 }
 
 function saveToGallery() {
+  drawTextOnCanvas(true)
   const memeData = getMemeData()
   const imageSrc = memeData.elCanvas.toDataURL('image/png')
   memeData.imgSource = imageSrc
   memeData.imgName = document.getElementById('imageName').value
   memeData.creator = document.getElementById('creatorName').value
   memeData.date = new Date().toISOString().split('T')[0]
-  memeData.keyword = document.getElementById('imgKeywords').value.split(',')
+  memeData.keyword = document.getElementById('imgKeywords').value.split(/[ ,]+/)
   memeData.colors = {
-    backgroundColor: document.getElementById('backgroundColor').value,
+    backgroundColor: document.getElementById('userBackgroundColor').value,
     backgroundColorMain: document.getElementById('backgroundColorMain').value,
-    textColor: document.getElementById('textColor').value,
+    textColor: document.getElementById('userTextColor').value,
   }
-
+  console.log(memeData.colors)
   saveImage(memeData)
+  closeDialog()
+  drawTextOnCanvas(false)
 }
 
 function downloadImage() {
+  drawTextOnCanvas(true)
   const memeData = getMemeData()
   const link = document.createElement('a')
   link.href = memeData.elCanvas.toDataURL('image/png')
@@ -602,6 +611,7 @@ function downloadImage() {
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)
+  drawTextOnCanvas(false)
 }
 
 function showSaveDialog() {
@@ -609,8 +619,7 @@ function showSaveDialog() {
   const imageSrc = memeData.elCanvas.toDataURL('image/png')
 
   const dialog = document.querySelector('.dialog')
-  dialog.innerHTML = `
-    <div class="dialog-content">
+  dialog.innerHTML = `<div class="dialog-content">
       <img src="${imageSrc}" alt="Meme Thumbnail" style="width: 100px; height: 100px;" />
       <div class="dialog-info">
         <table>
@@ -631,7 +640,7 @@ function showSaveDialog() {
           </tr>
           <tr>
             <td>Background Color</td>
-            <td><input type="color" id="backgroundColor" class="pointer" value="#ffffff" required /></td>
+            <td><input type="color" id="userBackgroundColor" class="pointer" value="#ffffff" required /></td>
           </tr>
           <tr>
             <td>Background Color Main</td>
@@ -639,18 +648,21 @@ function showSaveDialog() {
           </tr>
           <tr>
             <td>Text Color</td>
-            <td><input type="color" id="textColor" class="pointer" value="#000000" required /></td>
+            <td><input type="color" id="userTextColor" class="pointer" value="#000000" required /></td>
           </tr>
         </table>
       </div>
       <button onclick="saveToGallery()">Save</button>
       <button onclick="closeDialog()">Close</button>
-    </div>
-  `
+    </div>`
+
   dialog.style.display = 'block'
 }
 
 function closeDialog() {
-  const dialog = document.querySelector('.dialog')
-  dialog.style.display = 'none'
+  let imageData = getMemeData()
+  if (imageData.imgLines.length > 0) {
+    const dialog = document.querySelector('.dialog')
+    dialog.style.display = 'none'
+  }
 }

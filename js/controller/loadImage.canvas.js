@@ -33,7 +33,6 @@ function convertImageUrlToDataUrl(url, callback) {
 }
 
 function renderImage(imgSrc, size = null, imgId = null) {
-  closeDialog()
   let img = new Image()
   img.src = imgSrc
 
@@ -49,6 +48,8 @@ function validateAndRenderImage(imgSrc) {
   img.onload = () => {
     if (img.width && img.height) {
       renderImage(imgSrc, { width: img.width, height: img.height }, generateUniqueId())
+      addLine()
+      closeDialog()
     } else {
       showNotification('Invalid image file. Please upload a valid image.')
     }

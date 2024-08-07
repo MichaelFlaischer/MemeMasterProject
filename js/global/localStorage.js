@@ -16,7 +16,8 @@ function getAllBaseImages() {
   return JSON.parse(localStorage.getItem('base')) || []
 }
 
-function deleteImageById(id, type = 'base') {
+function deleteImageById(id, type) {
+  console.log(type)
   const allImages = JSON.parse(localStorage.getItem(type)) || []
   const filteredImages = allImages.filter((image) => image.imgID !== id)
   localStorage.setItem(type, JSON.stringify(filteredImages))
@@ -43,7 +44,7 @@ function getAllKeywords() {
 function getImagesByKeyword(keywordSearch) {
   const allBaseImages = [...getAllBaseImages(), ...getAllMeme()]
   return allBaseImages.filter((image) => {
-    return image.keywords.some((keyword) => keyword.toLowerCase().includes(keywordSearch.toLowerCase()))
+    return image.keyword.some((keyword) => keyword.toLowerCase().includes(keywordSearch.toLowerCase()))
   })
 }
 

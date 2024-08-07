@@ -20,21 +20,24 @@ function renderGallery(keyword = null) {
     }
 
     images.forEach((image) => {
+      console.log(image.typeImg)
+
       gallery.innerHTML += `
       <div class="image-container">
       <p>${image.imgName}</p>
-      <img src="${image.imgSource}" alt="${image.imgName}" onclick="openDialog('${image.imgID}')" />
+      <img src="${image.imgSource}" alt="${image.imgName}" onclick="openDialog('${image.imgID}', '${image.typeImg}')" />
       </div>`
     })
   }
 }
 
-function openShowModal(id) {
-  const images = JSON.parse(localStorage.getItem('base')) || []
-  const image = images.find((images) => images.imgID === id)
+function openShowModal(id, type) {
+  const images = JSON.parse(localStorage.getItem(type)) || []
+  const image = images.find((image) => image.imgID === id)
+  console.log()
+  if (!image) return
 
-  if (!images) return
-
+  console.log(image)
   let src = image.imgSource
   let alt = image.imgName
   document.querySelector('.dialog').innerHTML = `
@@ -75,12 +78,13 @@ function openShowModal(id) {
       </table>
     </div>
     <button onclick="saveColors('${image.colors.backgroundColor}', '${image.colors.backgroundColorMain}', '${image.colors.textColor}')">Change Theme</button>
-    <button onclick="window.location.href='meme-generator.html?imgtype=${image.typeImg}&imgid=${image.imgID}'">Crate MEME</button>
-    <button onclick="deleteImage('${id}')">Delete This Image</button>
+    <button onclick="window.location.href='meme-generator.html?imgtype=${image.typeImg}&imgid=${image.imgID}'">Create MEME</button>
+    <button onclick="deleteImage('${id}','${image.typeImg}')">Delete This Image</button>
   </div>`
 
   document.querySelector('.dialog').style.display = 'flex'
 }
+
 function openEditModal() {
   document.querySelector('.dialog').innerHTML = `
   <div class="dialog-content">
@@ -282,10 +286,12 @@ function showByType() {
       </div>`
 
   images.forEach((image) => {
+    console.log(image.typeImg)
+
     gallery.innerHTML += `
       <div class="image-container">
         <p>${image.imgName}</p>
-        <img src="${image.imgSource}" alt="${image.imgName}" onclick="openDialog('${image.imgID}')" />
+        <img src="${image.imgSource}" alt="${image.imgName}" onclick="openDialog('${image.imgID}', '${image.typeImg}')" />
       </div>`
   })
 
