@@ -185,23 +185,20 @@ function drawUnderline(elCanvas, line) {
 }
 
 function drawBackground(elCanvas, line) {
+  elCanvas.save()
+
+  elCanvas.font = getTextStyle(line)
+
   const textWidth = elCanvas.measureText(line.text).width
+  const textHeight = line.sizeText * 1.2
+
   const rectX = line.posText.x - textWidth / 2 - 5
-  const rectY = line.posText.y - line.sizeText / 2 - 5
+  const rectY = line.posText.y - textHeight / 2 - 5
   const rectWidth = textWidth + 10
-  const rectHeight = line.sizeText + 10
+  const rectHeight = textHeight + 10
 
   elCanvas.fillStyle = line.backgroundColor
   elCanvas.fillRect(rectX, rectY, rectWidth, rectHeight)
-}
 
-function disableTouchDefaultOnCanvas() {
-  let memeData = getMemeData()
-  memeData.elCanvas.addEventListener(
-    'touchstart',
-    function (event) {
-      event.preventDefault()
-    },
-    { passive: false }
-  )
+  elCanvas.restore()
 }

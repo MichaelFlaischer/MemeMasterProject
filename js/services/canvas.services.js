@@ -327,3 +327,31 @@ function moveLineDown() {
   updateControlPanel(memeData.imgLines[memeData.lineInChange])
   drawTextOnCanvas()
 }
+
+function moveText(direction) {
+  let memeData = getMemeData()
+  let lineNumber = memeData.lineInChange
+  let lineInChange = memeData.imgLines[lineNumber]
+
+  const stepSize = 5
+
+  switch (direction) {
+    case 'up':
+      lineInChange.posText.y -= stepSize
+      break
+    case 'down':
+      lineInChange.posText.y += stepSize
+      break
+    case 'left':
+      lineInChange.posText.x -= stepSize
+      break
+    case 'right':
+      lineInChange.posText.x += stepSize
+      break
+    default:
+      console.error('Invalid direction:', direction)
+      return
+  }
+
+  drawTextOnCanvas()
+}
