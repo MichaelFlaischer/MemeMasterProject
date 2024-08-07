@@ -126,6 +126,8 @@ function openSelectModal() {
           <li>Choose an image from the web</li>
           <input type='text' id='imgUrl' placeholder='Enter image URL' />
           <button onclick='createMemeFromUrl()'>Create Meme from URL</button>
+          <li>Generate a random meme</li>
+          <button onclick='generateRandomMeme()'>Generate Random Meme</button>
         </ul>
       </div>
     </div>`
