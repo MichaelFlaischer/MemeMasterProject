@@ -81,6 +81,8 @@ function stopDrawing(e) {
   }
 }
 
+const gLastPos = { x: null, y: null }
+
 function drawOnMove(e) {
   e.preventDefault()
 
@@ -88,12 +90,23 @@ function drawOnMove(e) {
 
   let memeData = getMemeData()
   const rect = memeData.elCanvas.getBoundingClientRect()
-  const x = e.clientX - rect.left
-  const y = e.clientY - rect.top
+
+  let x, y
+  if (e.type === 'mousemove') {
+    x = e.clientX - rect.left
+    y = e.clientY - rect.top
+  } else if (e.type === 'touchmove') {
+    x = e.touches[0].clientX - rect.left
+    y = e.touches[0].clientY - rect.top
+  }
+
+  const newPos = { x, y }
 
   const lineNumber = memeData.lineInChange
-  memeData.imgLines[lineNumber].posText.x = x
-  memeData.imgLines[lineNumber].posText.y = y
+  memeData.imgLines[lineNumber].posText.x += newPos.x - gLastPos.x
+  memeData.imgLines[lineNumber].posText.y += newPos.y - gLastPos.y
+  gLastPos.x = x
+  gLastPos.y = y
 
   drawTextOnCanvas()
 }
