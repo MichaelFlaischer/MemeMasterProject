@@ -75,7 +75,9 @@ function openShowModal(id, type) {
     <button onclick="saveColors('${image.colors.backgroundColor}', '${image.colors.backgroundColorMain}', '${image.colors.textColor}')">Change Theme</button>
     <button onclick="window.location.href='generator.html?imgtype=${image.typeImg}&imgid=${image.imgID}'">Create MEME</button>
     <button onclick="deleteImage('${id}','${image.typeImg}')">Delete This Image</button>
-  </div>`
+    <button onclick="downloadImage('${image.imgSource}')">Download Image</button>
+    <button onclick="shareOnFacebook('${image.imgSource}')">Share on Facebook</button>
+    </div>`
 
   document.querySelector('.dialog').style.display = 'flex'
 }

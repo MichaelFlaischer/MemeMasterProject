@@ -55,19 +55,6 @@ function saveToGallery() {
   drawTextOnCanvas(false)
 }
 
-function downloadImage() {
-  drawTextOnCanvas(true)
-  const memeData = getMemeData()
-  const link = document.createElement('a')
-  link.href = memeData.elCanvas.toDataURL('image/png')
-  link.download = 'meme.png'
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
-  showNotification('Meme downloaded.')
-  drawTextOnCanvas(false)
-}
-
 function showSaveDialog() {
   const memeData = getMemeData()
   const imageSrc = memeData.elCanvas.toDataURL('image/png')

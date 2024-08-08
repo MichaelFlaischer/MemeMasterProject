@@ -58,3 +58,29 @@ function validateAndRenderImage(imgSrc) {
     showNotification('Failed to load image. Please check the image file or URL.')
   }
 }
+
+function downloadImage(imageDataUrl = null) {
+  console.log('safsaf')
+  let memeData
+  let link = document.createElement('a')
+
+  if (imageDataUrl === null) {
+    drawTextOnCanvas(true)
+    memeData = getMemeData()
+    link.href = memeData.elCanvas.toDataURL('image/png')
+  } else {
+    link.href = imageDataUrl
+  }
+
+  link.download = 'meme.png'
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  showNotification('Meme downloaded.')
+
+  if (imageDataUrl === null) {
+    drawTextOnCanvas(false)
+  }
+}
+
+function shareOnFacebook() {}
