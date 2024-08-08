@@ -120,6 +120,7 @@ function getRandomMemeLines() {
 
   const colorCombination = getRandomColorCombination()
 
+  // Settings for the text
   const settings = {
     sizeText: Math.floor(Math.random() * 40) + 20,
     colorText: colorCombination.textColor,
@@ -132,6 +133,7 @@ function getRandomMemeLines() {
     angleSin: 0,
   }
 
+  // Assigning the random lines to the meme
   randomMeme.imgLines = [
     {
       text: line1,
@@ -148,6 +150,7 @@ function getRandomMemeLines() {
   randomMeme.imgID = generateUniqueId()
 }
 
+// Function to get a random color combination
 function getRandomColorCombination() {
   const colorCombinations = [
     { textColor: 'White', backgroundColor: 'Black' },
@@ -161,6 +164,7 @@ function getRandomColorCombination() {
   return colorCombinations[randomIndex]
 }
 
+// Function to generate a random meme
 function generateRandomMeme() {
   let randomMeme = getMemeData()
   const randomImage = getRandomBaseImage()
@@ -169,6 +173,7 @@ function generateRandomMeme() {
   randomMeme.baseImage = new Image()
   randomMeme.baseImage.src = randomImage.imgSource
 
+  // Load the base image and set up the canvas
   randomMeme.baseImage.onload = () => {
     randomMeme.elCanvas = document.querySelector('.canvas')
     randomMeme.canvas = randomMeme.elCanvas.getContext('2d')
@@ -182,6 +187,7 @@ function generateRandomMeme() {
 
     getRandomMemeLines()
 
+    // Position the text lines on the canvas
     randomMeme.imgLines.forEach((line) => {
       line.sizeText = randomMeme.elCanvas.width / 15
       if (line === randomMeme.imgLines[0]) {
