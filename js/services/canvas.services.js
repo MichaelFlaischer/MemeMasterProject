@@ -82,6 +82,8 @@ function stopDrawing(e) {
 }
 
 function drawOnMove(e) {
+  e.preventDefault()
+
   if (!isDragging) return
 
   let memeData = getMemeData()
