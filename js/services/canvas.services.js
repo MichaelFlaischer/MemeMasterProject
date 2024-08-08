@@ -101,10 +101,16 @@ function drawOnMove(e) {
   }
 
   const newPos = { x, y }
-
+  if (!gLastPos.x) {
+    gLastPos.x = x
+    gLastPos.y = y
+  }
   const lineNumber = memeData.lineInChange
   memeData.imgLines[lineNumber].posText.x += newPos.x - gLastPos.x
+  console.log(newPos.x - gLastPos.x)
   memeData.imgLines[lineNumber].posText.y += newPos.y - gLastPos.y
+  console.log(newPos.y - gLastPos.y)
+
   gLastPos.x = x
   gLastPos.y = y
 
