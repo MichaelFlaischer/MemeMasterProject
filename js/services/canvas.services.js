@@ -99,6 +99,7 @@ function drawOnMove(e) {
   } else {
     x = e.clientX - rect.left
     y = e.clientY - rect.top
+    alert('asfasf')
   }
   const newPos = { x, y }
   if (!gLastPos.x) {
