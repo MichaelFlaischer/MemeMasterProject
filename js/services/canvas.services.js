@@ -95,6 +95,7 @@ function drawOnMove(e) {
   if (e.touches) {
     x = e.touches[0].clientX - rect.left
     y = e.touches[0].clientY - rect.top
+    alert('asfasf')
   } else {
     x = e.clientX - rect.left
     y = e.clientY - rect.top
