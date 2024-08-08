@@ -81,8 +81,6 @@ function stopDrawing(e) {
   }
 }
 
-const gLastPos = { x: null, y: null }
-
 function drawOnMove(e) {
   e.preventDefault()
 
@@ -95,25 +93,14 @@ function drawOnMove(e) {
   if (e.touches) {
     x = e.touches[0].clientX - rect.left
     y = e.touches[0].clientY - rect.top
-    alert('asfasf')
   } else {
     x = e.clientX - rect.left
     y = e.clientY - rect.top
-    alert('asfasf')
   }
-  const newPos = { x, y }
-  if (!gLastPos.x) {
-    gLastPos.x = x
-    gLastPos.y = y
-  }
-  const lineNumber = memeData.lineInChange
-  memeData.imgLines[lineNumber].posText.x += newPos.x - gLastPos.x
-  console.log(newPos.x - gLastPos.x)
-  memeData.imgLines[lineNumber].posText.y += newPos.y - gLastPos.y
-  console.log(newPos.y - gLastPos.y)
 
-  gLastPos.x = x
-  gLastPos.y = y
+  const lineNumber = memeData.lineInChange
+  memeData.imgLines[lineNumber].posText.x = x
+  memeData.imgLines[lineNumber].posText.y = y
 
   drawTextOnCanvas()
 }
