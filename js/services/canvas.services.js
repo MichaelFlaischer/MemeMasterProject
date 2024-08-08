@@ -58,15 +58,29 @@ function addEventListeners() {
 }
 
 function startDrawing(e) {
+  e.preventDefault()
+
   let memeData = getMemeData()
   const rect = memeData.elCanvas.getBoundingClientRect()
-  const x = e.clientX - rect.left
-  const y = e.clientY - rect.top
+  let x, y
+
+  if (e.touches) {
+    x = e.touches[0].clientX - rect.left
+    y = e.touches[0].clientY - rect.top
+  } else {
+    x = e.clientX - rect.left
+    y = e.clientY - rect.top
+  }
 
   memeData.imgLines.forEach((line, index) => {
     const textWidth = memeData.canvas.measureText(line.text).width
     const textHeight = line.sizeText * 1.2
-    if (x >= line.posText.x - textWidth && x <= line.posText.x + textWidth && y >= line.posText.y - textHeight / 2 && y <= line.posText.y + textHeight / 2) {
+    if (
+      x >= line.posText.x - textWidth / 2 &&
+      x <= line.posText.x + textWidth / 2 &&
+      y >= line.posText.y - textHeight / 2 &&
+      y <= line.posText.y + textHeight / 2
+    ) {
       memeData.lineInChange = index
       updateControlPanel(line)
       isDragging = true
@@ -76,6 +90,7 @@ function startDrawing(e) {
 }
 
 function stopDrawing(e) {
+  e.preventDefault()
   if (isDragging) {
     isDragging = false
   }
@@ -88,8 +103,8 @@ function drawOnMove(e) {
 
   let memeData = getMemeData()
   const rect = memeData.elCanvas.getBoundingClientRect()
-
   let x, y
+
   if (e.touches) {
     x = e.touches[0].clientX - rect.left
     y = e.touches[0].clientY - rect.top
