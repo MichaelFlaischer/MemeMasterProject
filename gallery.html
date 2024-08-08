@@ -18,7 +18,13 @@
     <script src="js/controller/menu-bar.controller.js"></script>
     <header>
       <h1 data-i18n="gallery">Gallery</h1>
-      <button onclick="toggleLanguage()" class="language-toggle" data-i18n="languageToggle">עברית</button>
+      <select onchange="changeLanguage(this.value)" class="language-toggle" data-i18n="languageToggle">
+        <option value="en">English</option>
+        <option value="he">עברית</option>
+        <option value="ru">Русский</option>
+        <option value="ar">العربية</option>
+        <option value="de">Deutsch</option>
+      </select>
     </header>
     <nav></nav>
     <main>
