@@ -1,4 +1,6 @@
 'use strict'
+
+// Object containing translations for different languages
 const translations = {
   en: {
     addImage: 'Add Image',
@@ -300,6 +302,7 @@ const translations = {
   },
 }
 
+// Function to translate the page based on the selected language
 function translatePage(lang) {
   const elements = document.querySelectorAll('[data-i18n]')
   elements.forEach((element) => {
@@ -317,16 +320,18 @@ function translatePage(lang) {
   window.history.pushState({}, '', url)
 }
 
+// Function to change the language and update the URL with the selected language
 function changeLanguage(lang) {
   const url = new URL(window.location.href)
   url.searchParams.set('lang', lang)
   window.location.href = url.toString()
 }
 
+// Function to initialize the page with the current language settings
 function onInitPage() {
   const currentLanguage = getCurrentLanguage()
   translatePage(currentLanguage)
-  document.documentElement.dir = currentLanguage === 'he' ? 'rtl' : 'ltr'
+  document.documentElement.dir = currentLanguage === 'he' || currentLanguage === 'ar' ? 'rtl' : 'ltr'
   const languageToggle = document.querySelector('.language-toggle')
   if (languageToggle) {
     languageToggle.style.position = 'absolute'
@@ -350,6 +355,7 @@ function onInitPage() {
   addLanguageQueryParamToLinks()
 }
 
+// Function to add the current language query parameter to all links
 function addLanguageQueryParamToLinks() {
   const links = document.querySelectorAll('a')
   const currentLanguage = getCurrentLanguage()
@@ -360,6 +366,7 @@ function addLanguageQueryParamToLinks() {
   })
 }
 
+// Function to get the current language from the URL
 function getCurrentLanguage() {
   const urlParams = new URLSearchParams(window.location.search)
   return urlParams.get('lang') || 'en'

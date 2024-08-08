@@ -1,6 +1,8 @@
 'use strict'
 
+// Function to save the current meme to the gallery
 function saveToGallery() {
+  // Draw the text on canvas without selection boxes
   drawTextOnCanvas(true)
   const memeData = getMemeData()
   const imageSrc = memeData.elCanvas.toDataURL('image/png')
@@ -18,9 +20,10 @@ function saveToGallery() {
   saveImage(memeData)
   showNotification('Meme saved to gallery.')
   closeDialog()
-  drawTextOnCanvas(false)
+  drawTextOnCanvas(false) // Draw the text on canvas with selection boxes
 }
 
+// Function to show the save dialog
 function showSaveDialog() {
   const memeData = getMemeData()
   const imageSrc = memeData.elCanvas.toDataURL('image/png')
@@ -78,9 +81,10 @@ function showSaveDialog() {
     </div>`
 
   elDialog.style.display = 'flex'
-  onInitPage()
+  onInitPage() // Initialize translations and styles
 }
 
+// Function to close the dialog
 function closeDialog() {
   let memeData = getMemeData()
   if (memeData.imgLines.length > 0) {
@@ -89,6 +93,7 @@ function closeDialog() {
   }
 }
 
+// Function to open the select modal
 function openSelectModal() {
   const currentLanguage = getCurrentLanguage()
   const elDialog = document.querySelector('.dialog')
@@ -112,18 +117,21 @@ function openSelectModal() {
     </div>`
 
   elDialog.style.display = 'flex'
-  onInitPage()
+  onInitPage() // Initialize translations and styles
 }
 
+// Function to toggle the canvas visibility
 function toggleCanvas() {
   const elCanvas = document.querySelector('.canvas')
   elCanvas.style.display = 'flex'
 }
 
+// Function to focus on the text input field
 function focusOnInputText() {
   document.getElementById('textLineInput').focus()
 }
 
+// Function to update the text input field with the current line text
 function updateTextInput() {
   let memeData = getMemeData()
   let lineNumber = memeData.lineInChange
@@ -131,11 +139,13 @@ function updateTextInput() {
   document.getElementById('textLineInput').value = memeData.imgLines[lineNumber].text
 }
 
+// Function to update the select list with the text lines
 function updateSelectList() {
   const elSelect = document.getElementById('textLineSelect')
   const memeData = getMemeData()
   elSelect.innerHTML = ''
 
+  // Populate the select list with text lines
   memeData.imgLines.forEach((line, index) => {
     const option = document.createElement('option')
     option.value = index
@@ -146,11 +156,13 @@ function updateSelectList() {
   elSelect.value = memeData.lineInChange
 }
 
+// Function to select a text line from the list
 function selectTextFromList() {
   const elSelect = document.getElementById('textLineSelect')
   const memeData = getMemeData()
   const index = parseInt(elSelect.value, 10)
 
+  // Update the current line in change and redraw the canvas
   if (!isNaN(index) && index >= 0 && index < memeData.imgLines.length) {
     memeData.lineInChange = index
     updateControlPanel(memeData.imgLines[index])
@@ -158,6 +170,7 @@ function selectTextFromList() {
   }
 }
 
+// Function to update the control panel with the selected line's properties
 function updateControlPanel(line) {
   document.getElementById('textLineInput').value = line.text
   document.getElementById('textSize').value = line.sizeText
@@ -166,6 +179,7 @@ function updateControlPanel(line) {
   document.getElementById('opacity').value = line.opacity * 100
   document.getElementById('backgroundColor').value = line.backgroundColor || 'transparent'
 
+  // Update bold button style
   const elBoldButton = document.querySelector('.toggle-bold')
   if (line.isBold) {
     elBoldButton.style.fontWeight = 'bold'
@@ -177,6 +191,7 @@ function updateControlPanel(line) {
     elBoldButton.style.backgroundColor = ''
   }
 
+  // Update italic button style
   const elItalicButton = document.querySelector('.toggle-italic')
   if (line.isInclined) {
     elItalicButton.style.fontStyle = 'italic'
@@ -188,6 +203,7 @@ function updateControlPanel(line) {
     elItalicButton.style.backgroundColor = ''
   }
 
+  // Update underline button style
   const elUnderlineButton = document.querySelector('.toggle-underline')
   if (line.isBottomLine) {
     elUnderlineButton.style.textDecoration = 'underline'

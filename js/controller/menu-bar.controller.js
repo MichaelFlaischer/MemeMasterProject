@@ -1,7 +1,8 @@
 'use strict'
 
+// Function to render the menu and apply necessary styles and translations
 function menuRender() {
-  applyColorsOnSite()
+  applyColorsOnSite() // Apply the site color scheme
 
   const elNnav = document.querySelector('nav')
   elNnav.innerHTML = `
@@ -18,5 +19,5 @@ function menuRender() {
           </ul>
         </div>
       `
-  onInitPage()
+  onInitPage() // Initialize translations and styles
 }

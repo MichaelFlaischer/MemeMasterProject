@@ -1,5 +1,6 @@
 'use strict'
 
+// Function to get a random base image from local storage
 function getRandomBaseImage() {
   const images = JSON.parse(localStorage.getItem('base')) || []
   if (images.length === 0) {
@@ -10,10 +11,13 @@ function getRandomBaseImage() {
   return randomImage
 }
 
+// Function to get random meme lines
 function getRandomMemeLines() {
   let randomMeme = getMemeData()
 
+  // List of predefined meme line pairs
   const memeLinePairs = [
+    // Pair of lines for memes
     ['I used to be an adventurer like you...', 'Then I took an arrow to the knee.'],
     ['Winter is coming...', 'But so is summer.'],
     ['I solemnly swear...', 'That I am up to no good.'],

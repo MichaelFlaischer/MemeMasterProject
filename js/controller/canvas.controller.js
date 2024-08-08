@@ -1,5 +1,6 @@
 'use strict'
 
+// Initialize the canvas and event listeners
 function createCanvas() {
   let memeData = getMemeData()
   memeData.elCanvas = document.querySelector('.canvas')
@@ -8,6 +9,7 @@ function createCanvas() {
   addEventListeners()
 }
 
+// Update the base image on the canvas
 function updateBaseImage(baseImage, imgSize = null, imgID) {
   let memeData = getMemeData()
 
@@ -28,6 +30,7 @@ function updateBaseImage(baseImage, imgSize = null, imgID) {
   setImageOnCanvas()
 }
 
+// Set the image on the canvas with proper scaling
 function setImageOnCanvas() {
   let memeData = getMemeData()
 
@@ -78,6 +81,7 @@ function setImageOnCanvas() {
   memeData.baseImage = img
 }
 
+// Draw diagonal lines on the canvas (for debugging or effects)
 function drawDiagonalLines(elCanvas, width, height) {
   const lineSpacing = 20
   elCanvas.strokeStyle = '#ccc'
@@ -98,6 +102,7 @@ function drawDiagonalLines(elCanvas, width, height) {
   }
 }
 
+// Draw text on the canvas, optionally hiding the selection box
 function drawTextOnCanvas(hideSelection = false) {
   const memeData = getMemeData()
   const elCanvas = memeData.canvas
@@ -115,6 +120,7 @@ function drawTextOnCanvas(hideSelection = false) {
   memeData.imgSource = memeData.elCanvas.toDataURL()
 }
 
+// Draw a single line of text on the canvas
 function drawTextLine(elCanvas, line, index, lineInChange, hideSelection = false) {
   elCanvas.save()
 
@@ -146,10 +152,12 @@ function drawTextLine(elCanvas, line, index, lineInChange, hideSelection = false
   elCanvas.restore()
 }
 
+// Get the CSS font style for a line of text
 function getTextStyle(line) {
   return `${line.isBold ? 'bold' : 'normal'} ${line.isInclined ? 'italic' : 'normal'} ${line.sizeText}px ${line.styleText}`
 }
 
+// Draw a selection box around the text line
 function drawSelectionBox(elCanvas, line) {
   elCanvas.save()
 
@@ -171,6 +179,7 @@ function drawSelectionBox(elCanvas, line) {
   elCanvas.restore()
 }
 
+// Draw an underline beneath the text line
 function drawUnderline(elCanvas, line) {
   const textWidth = elCanvas.measureText(line.text).width
   const startX = line.posText.x - textWidth / 2
@@ -184,6 +193,7 @@ function drawUnderline(elCanvas, line) {
   elCanvas.stroke()
 }
 
+// Draw a background rectangle behind the text line
 function drawBackground(elCanvas, line) {
   elCanvas.save()
 

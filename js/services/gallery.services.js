@@ -1,56 +1,63 @@
 'use strict'
 
+// Initialize gallery on page load
 function onInitGallery() {
-  menuRender()
-  checkMemoryNotEmpty()
-  renderGallery()
-  renderKeywords()
+  menuRender() // Render the navigation menu
+  checkMemoryNotEmpty() // Check if there are images in memory, if not generate default images
+  renderGallery() // Render the gallery of images
+  renderKeywords() // Render the keywords for search
 }
 
+// Save and edit image in the gallery
 function saveAndEditImage() {
-  if (!validateInputs()) return
+  if (!validateInputs()) return // Validate the input fields
 
-  saveImageToGallery()
-  showNotification('Image saved and ready for editing!')
+  saveImageToGallery() // Save the image to the gallery
+  showNotification('Image saved and ready for editing!') // Show notification
 }
 
+// Open a dialog for viewing or editing an image
 function openDialog(id = null, type = null) {
   if (id !== null) {
-    openShowModal(id, type)
+    openShowModal(id, type) // Open modal to show image details
   } else {
-    openEditModal()
+    openEditModal() // Open modal to edit image details
   }
 }
 
+// Delete an image from the gallery
 function deleteImage(id, type) {
-  deleteImageById(id, type)
-  renderGallery()
-  renderKeywords()
-  showNotification('Image deleted successfully!')
-  closeDialog()
+  deleteImageById(id, type) // Delete the image by ID and type
+  renderGallery() // Re-render the gallery
+  renderKeywords() // Re-render the keywords
+  showNotification('Image deleted successfully!') // Show notification
+  closeDialog() // Close the dialog
 }
 
+// Create an image object
 function createImageObject(imgSource, imgName, creator, date, keywords, colors) {
   return {
-    imgID: generateUniqueId(),
+    imgID: generateUniqueId(), // Generate a unique ID for the image
     imgSource: imgSource,
     imgName: imgName,
     creator: creator,
     date: date,
     keyword: keywords,
     colors: colors,
-    typeImg: 'base',
+    typeImg: 'base', // Default image type
   }
 }
 
+// Check if memory is not empty, otherwise generate default images
 function checkMemoryNotEmpty() {
   if (getAllBaseImages().length < 1) {
-    let images = generateImageArray()
-    images.forEach((image) => saveImage(image))
-    initializeKeywordSearches()
+    let images = generateImageArray() // Generate an array of default images
+    images.forEach((image) => saveImage(image)) // Save each image to local storage
+    initializeKeywordSearches() // Initialize keyword searches
   }
 }
 
+// Generate an array of default images
 function generateImageArray() {
   const images = [
     {

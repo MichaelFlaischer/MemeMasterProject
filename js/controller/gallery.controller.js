@@ -1,23 +1,29 @@
 'use strict'
 
+// Function to render the gallery with images based on the selected type or keyword
 function renderGallery(keyword = null) {
   const gallery = document.querySelector('.gallery')
   let type = document.querySelector('.filterSelect').value
 
+  // Add "Add Image" button
   gallery.innerHTML = `
       <div class="image-container">
         <p data-i18n="addImage">Add Image</p>
         <img src="img/addImageButton.png" alt="add image" onclick="openDialog()" />
       </div>`
+
+  // If no keyword is provided, show images by type
   if (keyword === null || keyword.length === 0) {
     showByType(type)
   } else {
+    // Filter images by keyword
     let images = getImagesByKeyword(keyword)
     addKeywordSearch(keyword)
     if (type !== 'all') {
       images = images.filter((image) => image.typeImg === type)
     }
 
+    // Display filtered images
     images.forEach((image) => {
       gallery.innerHTML += `
       <div class="image-container">
@@ -28,6 +34,7 @@ function renderGallery(keyword = null) {
   }
 }
 
+// Function to open the modal to show image details
 function openShowModal(id, type) {
   const currentLanguage = getCurrentLanguage()
   const images = JSON.parse(localStorage.getItem(type)) || []
@@ -85,9 +92,10 @@ function openShowModal(id, type) {
     </div>`
 
   document.querySelector('.dialog').style.display = 'flex'
-  onInitPage()
+  onInitPage() // Initialize translations and styles
 }
 
+// Function to open the modal to add a new image
 function openEditModal() {
   document.querySelector('.dialog').innerHTML = `
   <div class="dialog-content">
@@ -129,9 +137,10 @@ function openEditModal() {
   </div>`
 
   document.querySelector('.dialog').style.display = 'flex'
-  onInitPage()
+  onInitPage() // Initialize translations and styles
 }
 
+// Function to load keywords by characters entered
 function loadKeywordsByChar(characters) {
   const elKeywordList = document.getElementById('keywordList')
   let optionsList = ''
@@ -142,6 +151,7 @@ function loadKeywordsByChar(characters) {
   elKeywordList.innerHTML = optionsList
 }
 
+// Function to close the dialog
 function closeDialog(event = null) {
   if (event === null || event.key === 'Escape') {
     const elDialog = document.querySelector('.dialog')
@@ -149,6 +159,7 @@ function closeDialog(event = null) {
   }
 }
 
+// Function to render keywords in the keyword container
 function renderKeywords() {
   const keywordContainer = document.querySelector('.keywordContainer')
   const keywordSearches = isMobileDevice() ? getKeywordSearches().slice(0, 5) : getKeywordSearches().slice(0, 15)
@@ -163,6 +174,7 @@ function renderKeywords() {
   keywordContainer.innerHTML = kewWordHtml
 }
 
+// Function to show all keywords
 function showAllKeyWords() {
   const keywordContainer = document.querySelector('.keywordContainer')
   const keywordSearches = getKeywordSearches()
@@ -178,6 +190,7 @@ function showAllKeyWords() {
   keywordContainer.innerHTML = kewWordHtml
 }
 
+// Function to show selected keyword
 function showSelectedKeyword(keyword) {
   const elKeywordList = document.getElementById('keywordInput')
   elKeywordList.value = keyword
@@ -185,12 +198,14 @@ function showSelectedKeyword(keyword) {
   renderKeywords()
 }
 
+// Function to clear the search input
 function clearSearchInput() {
   const elKeywordList = document.getElementById('keywordInput')
   elKeywordList.value = ''
   renderGallery()
 }
 
+// Function to preview image before uploading
 function previewImage(event) {
   const imgPreview = document.querySelector('.dialog-img')
   const file = event.target.files[0]
@@ -206,6 +221,7 @@ function previewImage(event) {
   }
 }
 
+// Function to validate input fields in the dialog
 function validateInputs() {
   const imgInput = document.getElementById('imgInput').files.length
   const imgName = document.getElementById('imgName').value.trim()
@@ -219,6 +235,7 @@ function validateInputs() {
   return true
 }
 
+// Function to save image to the gallery
 function saveImageToGallery() {
   if (!validateInputs()) return
 
@@ -233,7 +250,6 @@ function saveImageToGallery() {
     textColor: document.getElementById('textColor').value,
   }
   const imgKeywords = document.getElementById('imgKeywords').value.split(/[ ,]+/)
-
   const imgType = 'base'
 
   if (imgInput.files && imgInput.files[0]) {
@@ -261,6 +277,7 @@ function saveImageToGallery() {
   }
 }
 
+// Function to show images by type (all, base, meme)
 function showByType() {
   let images
   let type = document.querySelector('.filterSelect').value
@@ -289,5 +306,5 @@ function showByType() {
 
   const elKeywordList = document.getElementById('keywordInput')
   elKeywordList.value = ''
-  onInitPage()
+  onInitPage() // Initialize translations and styles
 }

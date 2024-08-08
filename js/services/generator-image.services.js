@@ -1,5 +1,6 @@
 'use strict'
 
+// Function to upload image from file input
 function uploadImageFromFile() {
   const imgInput = document.getElementById('imgInput').files[0]
   if (imgInput) {
@@ -13,6 +14,7 @@ function uploadImageFromFile() {
   }
 }
 
+// Function to create meme from URL
 function createMemeFromUrl(imageUrl = null) {
   let imgUrl
   if (imageUrl) {
@@ -23,6 +25,7 @@ function createMemeFromUrl(imageUrl = null) {
   convertImageUrlToDataUrl(imgUrl, validateAndRenderImage)
 }
 
+// Function to convert image URL to Data URL
 function convertImageUrlToDataUrl(url, callback) {
   fetch(url)
     .then((response) => response.blob())
@@ -37,6 +40,7 @@ function convertImageUrlToDataUrl(url, callback) {
     })
 }
 
+// Function to render image on canvas
 function renderImage(imgSrc, size = null, imgId = null) {
   let img = new Image()
   img.src = imgSrc
@@ -47,6 +51,7 @@ function renderImage(imgSrc, size = null, imgId = null) {
   }
 }
 
+// Function to validate and render image on canvas
 function validateAndRenderImage(imgSrc) {
   let img = new Image()
   img.src = imgSrc
@@ -64,6 +69,7 @@ function validateAndRenderImage(imgSrc) {
   }
 }
 
+// Function to download image as PNG
 function downloadImage(imageDataUrl = null) {
   let memeData
   let link = document.createElement('a')
@@ -87,6 +93,7 @@ function downloadImage(imageDataUrl = null) {
   }
 }
 
+// Function to share image via Web Share API or download if not supported
 function shareImage(urlData = null) {
   if (urlData) {
     if (urlData.startsWith('data:')) {
@@ -129,6 +136,7 @@ function shareImage(urlData = null) {
   }
 }
 
+// Function to process and share image blob
 function processAndShare(blob) {
   const file = new File([blob], 'meme.jpg', { type: 'image/jpeg' })
 

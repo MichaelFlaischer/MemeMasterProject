@@ -1,7 +1,9 @@
 'use strict'
 
+// Flag to track if a text line is being dragged
 let isDragging = false
 
+// Global object to store meme data
 let gMemeData = {
   imgID: null,
   imgSource: null,
@@ -24,10 +26,12 @@ let gMemeData = {
   imgLines: [],
 }
 
+// Function to get the current meme data
 function getMemeData() {
   return gMemeData
 }
 
+// Function to set meme data and initialize canvas
 function setMemeData(memeData) {
   gMemeData = memeData
 
@@ -43,6 +47,7 @@ function setMemeData(memeData) {
   memeData.canvas.clearRect(0, 0, screenWidth, screenHeight)
 }
 
+// Function to add event listeners for canvas interactions
 function addEventListeners() {
   let memeData = getMemeData()
   memeData.elCanvas.addEventListener('mousedown', startDrawing)
@@ -57,6 +62,7 @@ function addEventListeners() {
   document.addEventListener('keydown', handleKeyDown)
 }
 
+// Function to start drawing and detect if a text line is being dragged
 function startDrawing(e) {
   e.preventDefault()
 
@@ -89,6 +95,7 @@ function startDrawing(e) {
   })
 }
 
+// Function to stop drawing
 function stopDrawing(e) {
   e.preventDefault()
   if (isDragging) {
@@ -96,6 +103,7 @@ function stopDrawing(e) {
   }
 }
 
+// Function to handle drawing on canvas while moving
 function drawOnMove(e) {
   e.preventDefault()
 
@@ -120,6 +128,7 @@ function drawOnMove(e) {
   drawTextOnCanvas()
 }
 
+// Function to handle key down events for various actions
 function handleKeyDown(event) {
   if (event.key === 'Delete') {
     deleteLine()
@@ -134,6 +143,7 @@ function handleKeyDown(event) {
   }
 }
 
+// Function to rotate text line to the left
 function rotateLeft() {
   let memeData = getMemeData()
   let lineNumber = memeData.lineInChange
@@ -145,6 +155,7 @@ function rotateLeft() {
   drawTextOnCanvas()
 }
 
+// Function to rotate text line to the right
 function rotateRight() {
   let memeData = getMemeData()
   let lineNumber = memeData.lineInChange
@@ -156,6 +167,7 @@ function rotateRight() {
   drawTextOnCanvas()
 }
 
+// Function to toggle bold style for the current text line
 function toggleBold() {
   let memeData = getMemeData()
   let lineNumber = memeData.lineInChange
@@ -176,6 +188,7 @@ function toggleBold() {
   drawTextOnCanvas()
 }
 
+// Function to toggle italic style for the current text line
 function toggleItalic() {
   let memeData = getMemeData()
   let lineNumber = memeData.lineInChange
@@ -196,6 +209,7 @@ function toggleItalic() {
   drawTextOnCanvas()
 }
 
+// Function to toggle underline for the current text line
 function toggleUnderline() {
   let memeData = getMemeData()
   let lineNumber = memeData.lineInChange
@@ -216,6 +230,7 @@ function toggleUnderline() {
   drawTextOnCanvas()
 }
 
+// Function to change the font style of the current text line
 function changeFontStyle() {
   let memeData = getMemeData()
   let lineNumber = memeData.lineInChange
@@ -225,6 +240,7 @@ function changeFontStyle() {
   drawTextOnCanvas()
 }
 
+// Function to change the opacity of the current text line
 function changeOpacity() {
   let memeData = getMemeData()
   let lineNumber = memeData.lineInChange
@@ -234,6 +250,7 @@ function changeOpacity() {
   drawTextOnCanvas()
 }
 
+// Function to change the text size of the current text line
 function changeTextSize() {
   let memeData = getMemeData()
   let lineNumber = memeData.lineInChange
@@ -243,6 +260,7 @@ function changeTextSize() {
   drawTextOnCanvas()
 }
 
+// Function to change the text color of the current text line
 function changeTextColor() {
   let memeData = getMemeData()
   let lineNumber = memeData.lineInChange
@@ -252,6 +270,7 @@ function changeTextColor() {
   drawTextOnCanvas()
 }
 
+// Function to change the background color of the current text line
 function changeBackground() {
   let memeData = getMemeData()
   let lineNumber = memeData.lineInChange
@@ -261,6 +280,7 @@ function changeBackground() {
   drawTextOnCanvas()
 }
 
+// Function to update the text content of the current text line
 function updateText() {
   let memeData = getMemeData()
   let lineNumber = memeData.lineInChange
@@ -273,6 +293,7 @@ function updateText() {
   drawTextOnCanvas()
 }
 
+// Function to add a new text line
 function addLine() {
   let memeData = getMemeData()
 
@@ -298,6 +319,7 @@ function addLine() {
   drawTextOnCanvas()
 }
 
+// Function to add an emoji to the current text line
 function addEmoji(emoji) {
   let memeData = getMemeData()
   let lineNumber = memeData.lineInChange
@@ -308,6 +330,7 @@ function addEmoji(emoji) {
   drawTextOnCanvas()
 }
 
+// Function to delete the current text line
 function deleteLine() {
   let memeData = getMemeData()
   let lineNumber = memeData.lineInChange
@@ -324,6 +347,7 @@ function deleteLine() {
   drawTextOnCanvas()
 }
 
+// Function to move to the previous text line
 function moveLineUp() {
   let memeData = getMemeData()
   let lineNumber = memeData.lineInChange
@@ -336,6 +360,7 @@ function moveLineUp() {
   drawTextOnCanvas()
 }
 
+// Function to move to the next text line
 function moveLineDown() {
   let memeData = getMemeData()
   let lineNumber = memeData.lineInChange
@@ -348,6 +373,7 @@ function moveLineDown() {
   drawTextOnCanvas()
 }
 
+// Function to move the current text line in the specified direction
 function moveText(direction) {
   let memeData = getMemeData()
   let lineNumber = memeData.lineInChange
