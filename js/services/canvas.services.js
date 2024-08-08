@@ -92,14 +92,13 @@ function drawOnMove(e) {
   const rect = memeData.elCanvas.getBoundingClientRect()
 
   let x, y
-  if (e.type === 'mousemove') {
-    x = e.clientX - rect.left
-    y = e.clientY - rect.top
-  } else if (e.type === 'touchmove') {
+  if (e.touches) {
     x = e.touches[0].clientX - rect.left
     y = e.touches[0].clientY - rect.top
+  } else {
+    x = e.clientX - rect.left
+    y = e.clientY - rect.top
   }
-
   const newPos = { x, y }
   if (!gLastPos.x) {
     gLastPos.x = x
