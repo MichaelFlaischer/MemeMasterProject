@@ -13,8 +13,13 @@ function uploadImageFromFile() {
   }
 }
 
-function createMemeFromUrl() {
-  const imgUrl = document.getElementById('imgUrl').value
+function createMemeFromUrl(imageUrl = null) {
+  let imgUrl
+  if (imageUrl) {
+    imageUrl = imgUrl
+  } else {
+    imgUrl = document.getElementById('imgUrl').value
+  }
   convertImageUrlToDataUrl(imgUrl, validateAndRenderImage)
 }
 
@@ -60,7 +65,6 @@ function validateAndRenderImage(imgSrc) {
 }
 
 function downloadImage(imageDataUrl = null) {
-  console.log('safsaf')
   let memeData
   let link = document.createElement('a')
 
@@ -83,4 +87,69 @@ function downloadImage(imageDataUrl = null) {
   }
 }
 
-function shareOnFacebook() {}
+function shareImage(urlData = null) {
+  if (urlData) {
+    if (urlData.startsWith('data:')) {
+      // Convert data URL to Blob
+      const byteString = atob(urlData.split(',')[1])
+      const mimeString = urlData.split(',')[0].split(':')[1].split(';')[0]
+      const ab = new ArrayBuffer(byteString.length)
+      const ia = new Uint8Array(ab)
+      for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i)
+      }
+      const blob = new Blob([ab], { type: mimeString })
+      processAndShare(blob)
+    } else {
+      // Convert URL to data URL
+      convertImageUrlToDataUrl(urlData, (dataUrl) => {
+        const byteString = atob(dataUrl.split(',')[1])
+        const mimeString = dataUrl.split(',')[0].split(':')[1].split(';')[0]
+        const ab = new ArrayBuffer(byteString.length)
+        const ia = new Uint8Array(ab)
+        for (let i = 0; i < byteString.length; i++) {
+          ia[i] = byteString.charCodeAt(i)
+        }
+        const blob = new Blob([ab], { type: mimeString })
+        processAndShare(blob)
+      })
+    }
+  } else {
+    drawTextOnCanvas(true)
+    const memeData = getMemeData()
+    const dataUrl = memeData.elCanvas.toDataURL('image/png')
+    const byteString = atob(dataUrl.split(',')[1])
+    const mimeString = dataUrl.split(',')[0].split(':')[1].split(';')[0]
+    const ab = new ArrayBuffer(byteString.length)
+    const ia = new Uint8Array(ab)
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i)
+    }
+    const blob = new Blob([ab], { type: mimeString })
+    drawTextOnCanvas(false)
+    processAndShare(blob)
+  }
+}
+
+function processAndShare(blob) {
+  const file = new File([blob], 'meme.jpg', { type: 'image/jpeg' })
+
+  if (navigator.share) {
+    navigator
+      .share({
+        title: 'Check out this meme!',
+        text: 'I made this meme, check it out!',
+        files: [file],
+      })
+      .then(() => showNotification('Successful share'))
+      .catch((error) => showNotification('Error sharing', error))
+  } else {
+    const shareUrl = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = shareUrl
+    link.download = 'meme.jpg'
+    link.click()
+    URL.revokeObjectURL(shareUrl)
+    showNotification('Web Share API is not supported in your browser. The meme has been downloaded instead.')
+  }
+}
