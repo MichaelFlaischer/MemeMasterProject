@@ -269,7 +269,7 @@ function updateText() {
   lineInChange.text = document.getElementById('textLineInput').value
 
   updateSelectList()
-  updateControlPanel(lineInChange) // תיקון
+  updateControlPanel(lineInChange)
   drawTextOnCanvas()
 }
 

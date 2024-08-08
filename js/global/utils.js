@@ -47,3 +47,14 @@ function getImageDimensions(dataUrl) {
     }
   })
 }
+
+function showNotification(message) {
+  const elNotification = document.querySelector('.notification')
+  elNotification.innerText = message
+  elNotification.style.display = 'block'
+  onInitPage()
+
+  setTimeout(() => {
+    elNotification.style.display = 'none'
+  }, 3000)
+}

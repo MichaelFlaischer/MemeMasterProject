@@ -90,7 +90,6 @@ function downloadImage(imageDataUrl = null) {
 function shareImage(urlData = null) {
   if (urlData) {
     if (urlData.startsWith('data:')) {
-      // Convert data URL to Blob
       const byteString = atob(urlData.split(',')[1])
       const mimeString = urlData.split(',')[0].split(':')[1].split(';')[0]
       const ab = new ArrayBuffer(byteString.length)
@@ -101,7 +100,6 @@ function shareImage(urlData = null) {
       const blob = new Blob([ab], { type: mimeString })
       processAndShare(blob)
     } else {
-      // Convert URL to data URL
       convertImageUrlToDataUrl(urlData, (dataUrl) => {
         const byteString = atob(dataUrl.split(',')[1])
         const mimeString = dataUrl.split(',')[0].split(':')[1].split(';')[0]

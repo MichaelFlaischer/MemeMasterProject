@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="css/gallery.css" />
     <link rel="stylesheet" href="css/menu-bar.css" />
   </head>
-  <body onload="onInitGallery()" onkeydown="closeDialog(event)">
+  <body onload="onInitPage(); onInitGallery()" onkeydown="closeDialog(event)">
+    <script src="js/global/i18n.js"></script>
     <script src="js/global/utils.js"></script>
     <script src="js/global/localStorage.js"></script>
     <script src="js/services/gallery.services.js"></script>
@@ -16,7 +17,8 @@
     <script src="js/controller/gallery.controller.js"></script>
     <script src="js/controller/menu-bar.controller.js"></script>
     <header>
-      <h1>Gallery</h1>
+      <h1 data-i18n="gallery">Gallery</h1>
+      <button onclick="toggleLanguage()" class="language-toggle" data-i18n="languageToggle">עברית</button>
     </header>
     <nav></nav>
     <main>
@@ -30,13 +32,14 @@
               onchange="renderGallery(this.value)"
               placeholder="Enter keyword"
               list="keywordList"
+              data-i18n-placeholder="enterKeyword"
             />
             <datalist id="keywordList"></datalist>
-            <button onclick="clearSearchInput()">Clear Search Input</button>
+            <button onclick="clearSearchInput()" data-i18n="clearSearchInput">Clear Search Input</button>
             <select class="filterSelect" onchange="showByType()">
-              <option value="all">Show All</option>
-              <option value="base">Show Base Images</option>
-              <option value="meme">Show MEMEs</option>
+              <option value="all" data-i18n="showAll">Show All</option>
+              <option value="base" data-i18n="showBaseImages">Show Base Images</option>
+              <option value="meme" data-i18n="showMemes">Show MEMEs</option>
             </select>
           </div>
 

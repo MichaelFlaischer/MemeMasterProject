@@ -39,8 +39,8 @@ function setImageOnCanvas() {
 
   const imageRatio = imgWidth / imgHeight
 
-  const maxCanvasWidth = screenWidth * 0.5
-  const maxCanvasHeight = screenHeight * 0.5
+  const maxCanvasWidth = screenWidth
+  const maxCanvasHeight = screenHeight
 
   let newWidth, newHeight
 

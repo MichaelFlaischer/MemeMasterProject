@@ -31,13 +31,13 @@ function showSaveDialog() {
       <div class='dialog-info'>
         <table>
           <tr>
-            <td>Image Name</td>
+            <td data-i18n="imageName">Image Name</td>
             <td>
               <input type='text' id='imageName' placeholder='Image Name' required />
             </td>
           </tr>
           <tr>
-            <td>Creator Name</td>
+            <td data-i18n="creatorName">Creator Name</td>
             <td>
               <input type='text' id='creatorName' placeholder='Creator Name' required />
             </td>
@@ -48,36 +48,37 @@ function showSaveDialog() {
             </td>
           </tr>
           <tr>
-            <td>Keywords</td>
+            <td data-i18n="keywords">Keywords</td>
             <td>
               <input type='text' id='imgKeywords' placeholder='Keywords (comma separated)' required />
             </td>
           </tr>
           <tr>
-            <td>Background Color</td>
+            <td data-i18n="backgroundColor">Background Color</td>
             <td>
               <input type='color' id='userBackgroundColor' class='pointer' value='#ffffff' required />
             </td>
           </tr>
           <tr>
-            <td>Background Color Main</td>
+            <td data-i18n="backgroundColorMain">Background Color Main</td>
             <td>
               <input type='color' id='backgroundColorMain' class='pointer' value='#ffffff' required />
             </td>
           </tr>
           <tr>
-            <td>Text Color</td>
+            <td data-i18n="textColor">Text Color</td>
             <td>
               <input type='color' id='userTextColor' class='pointer' value='#000000' required />
             </td>
           </tr>
         </table>
       </div>
-      <button onclick='saveToGallery()'>Save</button>
-      <button onclick='closeDialog()'>Close</button>
+      <button onclick='saveToGallery()' data-i18n="saveToGallery">Save</button>
+      <button onclick='closeDialog()' data-i18n="close">Close</button>
     </div>`
 
   elDialog.style.display = 'flex'
+  onInitPage()
 }
 
 function closeDialog() {
@@ -88,38 +89,30 @@ function closeDialog() {
   }
 }
 
-function showNotification(message) {
-  const elNotification = document.querySelector('.notification')
-  elNotification.innerText = message
-  elNotification.style.display = 'block'
-
-  setTimeout(() => {
-    elNotification.style.display = 'none'
-  }, 3000)
-}
-
 function openSelectModal() {
+  const currentLanguage = getCurrentLanguage()
   const elDialog = document.querySelector('.dialog')
   elDialog.innerHTML = `<div class='dialog-content'>
       <div class='dialog-info'>
-        <h2>No image found</h2>
-        <p>You can:</p>
+        <h2 data-i18n="noImageFound">No image found</h2>
+        <p data-i18n="youCan">You can:</p>
         <ul>
-          <li>Go to the gallery and select an image or meme for editing</li>
-          <button onclick="window.location.href='gallery.html'">Go to Gallery</button>
-          <li>Upload an image from your computer to create a meme</li>
+          <li data-i18n="goToGallery">Go to the gallery and select an image or meme for editing</li>
+          <button onclick="window.location.href='gallery.html?lang=${currentLanguage}'" data-i18n="goToGallery">Go to Gallery</button>
+          <li data-i18n="uploadFromComputer">Upload an image from your computer to create a meme</li>
           <input type='file' id='imgInput' class='pointer' accept='image/*' />
-          <button onclick='uploadImageFromFile()'>Upload from Computer</button>
-          <li>Choose an image from the web</li>
+          <button onclick='uploadImageFromFile()' data-i18n="uploadFromComputer">Upload from Computer</button>
+          <li data-i18n="chooseImage">Choose an image from the web</li>
           <input type='text' id='imgUrl' placeholder='Enter image URL' />
-          <button onclick='createMemeFromUrl()'>Create Meme from URL</button>
-          <li>Generate a random meme</li>
-          <button onclick='generateRandomMeme()'>Generate Random Meme</button>
+          <button onclick='createMemeFromUrl()' data-i18n="createMemeFromUrl">Create Meme from URL</button>
+          <li data-i18n="generateRandomMeme">Generate a random meme</li>
+          <button onclick='generateRandomMeme()' data-i18n="generateRandomMeme">Generate Random Meme</button>
         </ul>
       </div>
     </div>`
 
   elDialog.style.display = 'flex'
+  onInitPage()
 }
 
 function toggleCanvas() {

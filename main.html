@@ -8,13 +8,15 @@
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/menu-bar.css" />
   </head>
-  <body onload="onInit()">
+  <body onload="onInitPage(); onInit()">
+    <script src="js/global/i18n.js"></script>
     <script src="js/global/utils.js"></script>
     <script src="js/global/localStorage.js"></script>
     <script src="js/services/main.services.js"></script>
     <script src="js/controller/menu-bar.controller.js"></script>
     <header>
-      <h1>Welcome to MemeMaster</h1>
+      <h1 data-i18n="welcomeMessage">Welcome to MemeMaster</h1>
+      <button onclick="toggleLanguage()" class="language-toggle" data-i18n="languageToggle">עברית</button>
     </header>
     <nav></nav>
     <main>
@@ -22,8 +24,8 @@
         <section class="hero">
           <div class="video-container"></div>
           <div class="hero-content">
-            <h2>Unleash Your Creativity with MemeMaster</h2>
-            <p>
+            <h2 data-i18n="heroContent">Unleash Your Creativity with MemeMaster</h2>
+            <p data-i18n="heroText">
               Create hilarious and engaging memes with intuitive tools and features designed for creators of all levels. Explore your imagination and bring your
               ideas to life!
             </p>

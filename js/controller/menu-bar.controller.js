@@ -11,11 +11,12 @@ function menuRender() {
         </label>
         <div class="nav-container">
           <ul>
-            <li><a href="main.html">Home</a></li>
-            <li><a href="gallery.html">Gallery</a></li>
-            <li><a href="generator.html">Generator</a></li>
-            <li><a href="about.html">About</a></li>
+            <li><a href="main.html" data-i18n="home">Home</a></li>
+            <li><a href="gallery.html" data-i18n="gallery">Gallery</a></li>
+            <li><a href="generator.html" data-i18n="generator">Generator</a></li>
+            <li><a href="about.html" data-i18n="about">About</a></li>
           </ul>
         </div>
       `
+  onInitPage()
 }

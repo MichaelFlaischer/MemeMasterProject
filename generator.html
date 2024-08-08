@@ -14,7 +14,8 @@
       rel="stylesheet"
     />
   </head>
-  <body onload="onInitMeme()">
+  <body onload="onInitPage(); onInitMeme()">
+    <script src="js/global/i18n.js"></script>
     <script src="js/global/utils.js"></script>
     <script src="js/global/localStorage.js"></script>
     <script src="js/controller/menu-bar.controller.js"></script>
@@ -27,7 +28,8 @@
     <script src="js/controller/generator.controller.js"></script>
     <script src="js/services/generator-random.services.js"></script>
     <header>
-      <h1>Meme Generator</h1>
+      <h1 data-i18n="memeGenerator">Meme Generator</h1>
+      <button onclick="toggleLanguage()" class="language-toggle" data-i18n="languageToggle">עברית</button>
     </header>
     <nav></nav>
     <main>
@@ -41,12 +43,18 @@
             <select id="textLineSelect" onchange="selectTextFromList()"></select>
           </div>
           <div class="text-control">
-            <button onclick="addLine()">➕</button>
-            <button onclick="deleteLine()">🗑️</button>
-            <button onclick="moveLineUp()">🔼</button>
-            <button onclick="moveLineDown()">🔽</button>
-            <button onclick="rotateLeft()">↩️</button>
-            <button onclick="rotateRight()">↪️</button>
+            <div>
+              <button onclick="addLine()">➕</button>
+              <button onclick="deleteLine()">🗑️</button>
+            </div>
+            <div>
+              <button onclick="moveLineUp()">🔼</button>
+              <button onclick="moveLineDown()">🔽</button>
+            </div>
+            <div>
+              <button onclick="rotateLeft()">↩️</button>
+              <button onclick="rotateRight()">↪️</button>
+            </div>
           </div>
           <div class="text-move">
             <button onclick="moveText('up')">⬆️</button>
@@ -73,26 +81,26 @@
           </div>
           <div class="text-vision">
             <div class="do-in-colums">
-              <label for="opacity">Opacity: </label>
+              <label for="opacity" data-i18n="opacity">Opacity: </label>
               <input type="number" id="opacity" name="opacity" min="1" max="100" value="80" onchange="changeOpacity()" />
             </div>
             <div class="do-in-colums">
-              <label for="textSize">Text Size: </label>
+              <label for="textSize" data-i18n="textSize">Text Size: </label>
               <input type="number" id="textSize" name="textSize" min="30" max="120" value="50" onchange="changeTextSize()" />
             </div>
             <div class="do-in-colums">
-              <label for="textColor">Text color: </label>
+              <label for="textColor" data-i18n="textColor">Text color: </label>
               <input type="color" id="textColor" name="textColor" onchange="changeTextColor()" value="#000000" />
             </div>
             <div class="do-in-colums">
-              <label for="backgroundColor">Background color: </label>
+              <label for="backgroundColor" data-i18n="backgroundColor">Background color: </label>
               <select id="backgroundColor" name="backgroundColor" onchange="changeBackground()">
-                <option value="transparent">Transparent</option>
-                <option value="#FFFFFF">White</option>
-                <option value="#000000">Black</option>
-                <option value="#FF0000">Red</option>
-                <option value="#00FF00">Green</option>
-                <option value="#0000FF">Blue</option>
+                <option value="transparent" data-i18n="transparent">Transparent</option>
+                <option value="#FFFFFF" data-i18n="white">White</option>
+                <option value="#000000" data-i18n="black">Black</option>
+                <option value="#FF0000" data-i18n="red">Red</option>
+                <option value="#00FF00" data-i18n="green">Green</option>
+                <option value="#0000FF" data-i18n="blue">Blue</option>
               </select>
             </div>
           </div>
@@ -128,11 +136,11 @@
             <button onclick="addEmoji('😣')">😣</button>
             <button onclick="addEmoji('😥')">😥</button>
           </div>
-          <section class="meme-save">
-            <button onclick="showSaveDialog()">Save to Gallery</button>
-            <button onclick="downloadImage()">Download Image</button>
-            <button onclick="shareImage()">Share this Image</button>
-          </section>
+          <div class="meme-save">
+            <button onclick="showSaveDialog()" data-i18n="saveToGallery">Save to Gallery</button>
+            <button onclick="downloadImage()" data-i18n="downloadImage">Download Image</button>
+            <button onclick="shareImage()" data-i18n="shareImage">Share this Image</button>
+          </div>
         </section>
       </div>
     </main>

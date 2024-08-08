@@ -6,7 +6,7 @@ function renderGallery(keyword = null) {
 
   gallery.innerHTML = `
       <div class="image-container">
-        <p>Add Image</p>
+        <p data-i18n="addImage">Add Image</p>
         <img src="img/addImageButton.png" alt="add image" onclick="openDialog()" />
       </div>`
   if (keyword === null || keyword.length === 0) {
@@ -29,6 +29,7 @@ function renderGallery(keyword = null) {
 }
 
 function openShowModal(id, type) {
+  const currentLanguage = getCurrentLanguage()
   const images = JSON.parse(localStorage.getItem(type)) || []
   const image = images.find((image) => image.imgID === id)
   if (!image) return
@@ -43,43 +44,48 @@ function openShowModal(id, type) {
       <h2>${image.imgName}</h2>
       <table>
         <tr>
-          <td>Creator Name</td>
+          <td data-i18n="creatorName">Creator Name</td>
           <td>${image.creator}</td>
         </tr>
         <tr>
-          <td>Type</td>
+          <td data-i18n="type">Type</td>
           <td>${image.typeImg}</td>
         </tr>
         <tr>
-          <td>Date</td>
+          <td data-i18n="date">Date</td>
           <td>${image.date}</td>
         </tr>
         <tr>
-          <td>Keywords</td>
+          <td data-i18n="keywords">Keywords</td>
           <td>${image.keyword.join(', ')}</td>
         </tr>
         <tr>
-          <td>Background Color</td>
+          <td data-i18n="backgroundColor">Background Color</td>
           <td><input type="color" id="backgroundColor" value="${image.colors.backgroundColor}" disabled /></td>
         </tr>
         <tr>
-          <td>Background Color Main</td>
+          <td data-i18n="backgroundColorMain">Background Color Main</td>
           <td><input type="color" id="backgroundColorMain" value="${image.colors.backgroundColorMain}" disabled /></td>
         </tr>
         <tr>
-          <td>Text Color</td>
+          <td data-i18n="textColor">Text Color</td>
           <td><input type="color" id="textColor" value="${image.colors.textColor}" disabled /></td>
         </tr>
       </table>
     </div>
-    <button onclick="saveColors('${image.colors.backgroundColor}', '${image.colors.backgroundColorMain}', '${image.colors.textColor}')">Change Theme</button>
-    <button onclick="window.location.href='generator.html?imgtype=${image.typeImg}&imgid=${image.imgID}'">Create MEME</button>
-    <button onclick="deleteImage('${id}','${image.typeImg}')">Delete This Image</button>
-    <button onclick="downloadImage('${image.imgSource}')">Download Image</button>
-    <button onclick="shareImage('${image.imgSource}')">Share This Image</button>
+    <button onclick="saveColors('${image.colors.backgroundColor}', '${image.colors.backgroundColorMain}', '${
+    image.colors.textColor
+  }')" data-i18n="changeTheme">Change Theme</button>
+    <button onclick="window.location.href='generator.html?imgtype=${image.typeImg}&imgid=${
+    image.imgID
+  }&lang=${currentLanguage}'" data-i18n="createMEME">Create MEME</button>
+    <button onclick="deleteImage('${id}','${image.typeImg}')" data-i18n="deleteThisImage">Delete This Image</button>
+    <button onclick="downloadImage('${image.imgSource}')" data-i18n="downloadImage">Download Image</button>
+    <button onclick="shareImage('${image.imgSource}')" data-i18n="shareThisImage">Share This Image</button>
     </div>`
 
   document.querySelector('.dialog').style.display = 'flex'
+  onInitPage()
 }
 
 function openEditModal() {
@@ -91,38 +97,39 @@ function openEditModal() {
     <div class="dialog-info">
       <table>
         <tr>
-          <td>Image Name</td>
+          <td data-i18n="imageName">Image Name</td>
           <td><input type="text" id="imgName" placeholder="Image Name" required /></td>
         </tr>
         <tr>
-          <td>Creator Name</td>
+          <td data-i18n="creatorName">Creator Name</td>
           <td><input type="text" id="creatorName" placeholder="Creator Name" required /></td>
         </tr>
         <tr style="display:none;">
           <td><input type="text" id="typeImg" value="base" disabled /></td>
         </tr>
         <tr>
-          <td>Keywords</td>
+          <td data-i18n="keywords">Keywords</td>
           <td><input type="text" id="imgKeywords" placeholder="Keywords (comma separated)" required /></td>
         </tr>
         <tr>
-          <td>Background Color</td>
+          <td data-i18n="backgroundColor">Background Color</td>
           <td><input type="color" id="backgroundColor" class="pointer" value="#ffffff" required /></td>
         </tr>
         <tr>
-          <td>Background Color Main</td>
+          <td data-i18n="backgroundColorMain">Background Color Main</td>
           <td><input type="color" id="backgroundColorMain" class="pointer" value="#ffffff" required /></td>
         </tr>
         <tr>
-          <td>Text Color</td>
+          <td data-i18n="textColor">Text Color</td>
           <td><input type="color" id="textColor" class="pointer" value="#000000" required /></td>
         </tr>
       </table>
     </div>
-    <button onclick="saveImageToGallery()">Save Image</button>
+    <button onclick="saveImageToGallery()" data-i18n="saveToGallery">Save Image</button>
   </div>`
 
   document.querySelector('.dialog').style.display = 'flex'
+  onInitPage()
 }
 
 function loadKeywordsByChar(characters) {
@@ -212,16 +219,6 @@ function validateInputs() {
   return true
 }
 
-function showNotification(message) {
-  const notification = document.querySelector('.notification')
-  notification.innerText = message
-  notification.style.display = 'block'
-
-  setTimeout(() => {
-    notification.style.display = 'none'
-  }, 3000)
-}
-
 function saveImageToGallery() {
   if (!validateInputs()) return
 
@@ -278,7 +275,7 @@ function showByType() {
   const gallery = document.querySelector('.gallery')
   gallery.innerHTML = `
       <div class="image-container">
-        <p>Add Image</p>
+        <p data-i18n="addImage">Add Image</p>
         <img src="img/addImageButton.png" alt="add image" onclick="openDialog()" />
       </div>`
 
@@ -292,4 +289,5 @@ function showByType() {
 
   const elKeywordList = document.getElementById('keywordInput')
   elKeywordList.value = ''
+  onInitPage()
 }
